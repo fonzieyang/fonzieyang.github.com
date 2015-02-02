@@ -22,9 +22,9 @@
                         </a>
                     </li>
                     {% endif %}
-                    {% if site.facebook_username %}
+                    {% if site.facebook_page %}
                     <li>
-                        <a href="https://www.facebook.com/{{ site.facebook_username }}">
+                        <a href="https://www.facebook.com/profile.php?id={{ site.facebook_page }}">
                             <span class="fa-stack fa-lg">
                                 <i class="fa fa-circle fa-stack-2x"></i>
                                 <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
@@ -42,6 +42,16 @@
                         </a>
                     </li>
                     {% endif %}
+                    {% if site.weibo_username %}
+                    <li>
+                        <a href="http://weibo.com/{{ site.weibo_username }}">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    {% endif %}                    
                 </ul>
                 <p class="copyright text-muted">Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }}</p>
             </div>
@@ -57,3 +67,9 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="{{ "/js/clean-blog.min.js " | prepend: site.baseurl }}"></script>
+
+<!-- <script src="{{ "/js/toc-aside.js " | prepend: site.baseurl }}"></script> -->
+
+
+
+
