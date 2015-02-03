@@ -4,7 +4,7 @@ title: "Tags"
 description: 
 header-img: "img/tags-bg.jpg"
 ---
-<ul class="entry-meta inline-list">
+<ul class="entry-meta inline-list" >
 {% assign tags_list = site.tags %}  
   {% if tags_list.first[0] == null %}
     {% for tag in tags_list %} 
@@ -12,7 +12,7 @@ header-img: "img/tags-bg.jpg"
     {% endfor %}
   {% else %}
     {% for tag in tags_list %} 
-      <li><a href="#{{ tag[0] }}" class="tag">{{ tag[0] }} <span>{{ tag[1].size }}</span></a></li>
+      <li><a href="#{{ tag[0] }}" class="tag">{{ tag[0] }} <span>{{ tag[1].size }}篇</span></a></li>
     {% endfor %}
   {% endif %}
 {% assign tags_list = nil %}
@@ -20,8 +20,9 @@ header-img: "img/tags-bg.jpg"
 
 {% for tag in site.tags %} 
   <article class="hentry">
+  <br></br>
   <h2 id="{{ tag[0] }}">{{ tag[0] }}</h2>
-    <ul>
+    <ul style="list-style: none">
     {% assign pages_list = tag[1] %}  
     {% for post in pages_list %}
       {% if post.title != null %}

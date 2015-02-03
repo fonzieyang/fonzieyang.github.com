@@ -51,7 +51,17 @@
                             </span>
                         </a>
                     </li>
-                    {% endif %}                    
+                    {% endif %}        
+                    {% if site.linkedin_id %}
+                    <li>
+                        <a href="http://www.linkedin.com/profile/view?id=321914505{{ site.linkedin_id }}">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    {% endif %}              
                 </ul>
                 <p class="copyright text-muted">Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }}</p>
             </div>

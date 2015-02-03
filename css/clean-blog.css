@@ -65,6 +65,49 @@ hr.small {
   right:20px;
 }
 
+.tag {
+  display: inline-block;
+  padding: 2px 6px;
+  margin: 4px;
+  color: #fff;
+  background-color: #bbb;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.tag span {
+  font-size: 10px;
+  font-size: .625rem;
+  vertical-align: super;
+}
+
+.entry-title {
+  background:#F2EEEC; 
+  padding:5px; 
+  margin:3px 0
+}
+
+.categories-item {
+  list-style-type: none;
+  background-color: #bbb;
+  border-color: #bbb;
+  color: #fff;
+  margin: 10px 10px;
+  padding: 3px 20px;
+  float: left;
+  border-style: solid!important;
+  border-width: 2px!important;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.categories-item a span {
+  font-size: .625rem;
+  vertical-align: super;
+}
+
 #ds-reset .ds-avatar img{
   width:54px;height:54px; /*设置图像的长和宽*/
   border-radius: 27px;/*设置图像圆角效果,在这里我直接设置了超过width/2的像素，即为圆形了*/
