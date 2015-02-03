@@ -1,12 +1,13 @@
 ---
 layout: page
-description: "我见过最高尚的兽人，也见过最卑鄙的人类。"
+description: "make it Fun and it will get Done."
 ---
 
 {% for post in paginator.posts %}
 <div class="post-preview">
     <a href="{{ post.url | prepend: site.baseurl }}">
-        <h2 class="post-title">            {{ post.title }}
+        <h2 class="post-title">            
+            {{ post.title }}
         </h2>
         {% if post.subtitle %}
         <h3 class="post-subtitle">
