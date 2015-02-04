@@ -12,6 +12,7 @@ weibo_username: lauhonyeung
 linkedin_username: lauhonyeung
 
 # Build settings
+pygments: true
 markdown: kramdown
 highlighter: pygments
 permalink: /:title
