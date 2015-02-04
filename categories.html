@@ -7,7 +7,7 @@ header-img: "img/post-bg-051.jpg"
 <articlee>
 <div class="container">
     <h3 class="title">{{ page.title }}</h3>
-    <ul class="categories">
+    <ul class="categories" >
     {% assign categories_list = site.categories %}
     {% for category in categories_list %}
         <li class="categories-item"><a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category[0] }}-ref">
