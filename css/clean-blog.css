@@ -130,6 +130,23 @@ hr.small {
       -moz-transform: rotateZ(360deg);
 }
 
+@media screen and (max-width: 600px) {
+    #ds-thread #ds-reset .ds-replybox .ds-avatar,
+    #ds-thread #ds-reset .ds-sync,
+    #ds-thread #ds-reset .ds-sort{
+        display:none;
+    }
+    #ds-thread #ds-reset ul.ds-children{
+        margin-left:0;
+    }
+    #ds-thread #ds-reset>ul.ds-comments>li.ds-post>ul.ds-children{
+        padding-left:30px;
+    }
+    #ds-thread #ds-reset .ds-replybox{
+        padding-left:0;
+    }
+}
+
 
 @media only screen and (min-width: 768px) {
   .navbar-custom {
