@@ -1,8 +1,8 @@
 ---
 
 layout:     post
-title:      "Unity3D踩坑日志"
-subtitle:   "踩着踩着就习惯了"
+title:      "Effective Unity3D"
+subtitle:   "u3d开发的经验谈"
 author:     "Fonzie"
 categories: 游戏开发
 tags: [Unity3D, tag]
