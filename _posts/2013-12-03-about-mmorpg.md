@@ -1,8 +1,8 @@
 ---
 
 layout:     post
-title:      "端游的结束"
-subtitle:   "大端游时代就这么结束"
+title:      "端游创业时代的结束"
+subtitle:   "关于过去参与端游开发的分享"
 author:     "Fonzie"
 categories: 游戏开发
 tags: [回忆, tag]
