@@ -2,7 +2,7 @@
 
 layout:     post
 title:      "高效率生活"
-subtitle:   "科技是第一生产力"
+subtitle:   ""
 categories: 效率
 tags: [效率, tag]
 header-img: "img/desk-602975_1280.jpg"
