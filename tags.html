@@ -9,19 +9,20 @@ header-img: "img/tags-bg.jpg"
 <ul class="entry-meta inline-list" style="list-style: none">
 {% assign tags_list = site.tags %}  
   {% if tags_list.first[0] == null %}
-    {% for tag in tags_list %} 
+    {% for tag in tags_list %} {% if tag ~= "tag" %}
       <li style="float: left"><a href="#{{ tag }}" class="tag">{{ tag }} <span>{{ site.tags[tag].size }}篇</span></a></li>
-    {% endfor %}
+    {% endif %}{% endfor %}
   {% else %}
-    {% for tag in tags_list %} 
+    {% for tag in tags_list %} {% if tag[0] != "tag" %}
       <li style="float: left"><a href="#{{ tag[0] }}" class="tag">{{ tag[0] }} <span>{{ tag[1].size }}篇</span></a></li>
-    {% endfor %}
+    {% endif %}{% endfor %}
   {% endif %}
 {% assign tags_list = nil %}
 <br></br>
 </ul>
 <br></br>
 {% for tag in site.tags %} 
+  {% if tag[0] != "tag" %}
   <article class="hentry">
   <br></br>
   <h2 id="{{ tag[0] }}">{{ tag[0] }}</h2>
@@ -38,4 +39,5 @@ header-img: "img/tags-bg.jpg"
     {% assign group = nil %}
     </ul>
   </article><!-- /.hentry -->
+  {% endif %}
 {% endfor %}

@@ -5,7 +5,7 @@ title:      "手游框架设计&lt;零&gt;"
 subtitle:   "过去一年的框架设计总结，站在巨人的肩膀上"
 author:     "Fonzie"
 categories: 游戏开发
-tags: [回忆, tag]
+tags: [心得, tag]
 header-img: "img/lf2.jpg"
 
 ---

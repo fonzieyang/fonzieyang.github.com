@@ -5,7 +5,7 @@ title:      "高效率生活"
 subtitle:   "不要省钱，我们省时间"
 author:     "Fonzie"
 categories: 效率
-tags: [心得, tag]
+tags: [效率, tag]
 header-img: "img/desk-602975_1280.jpg"
 
 ---
