@@ -4,7 +4,7 @@ layout:     post
 title:      "手游框架设计&lt;零&gt;"
 subtitle:   "过去一年的框架设计总结，站在巨人的肩膀上"
 categories: 游戏开发
-tags: [心得, tag]
+tags: [框架, tag]
 header-img: "img/lf2.jpg"
 
 ---
