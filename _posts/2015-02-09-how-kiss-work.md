@@ -3,7 +3,6 @@
 layout:     post
 title:      "贯彻单点真理，打造KISS项目"
 subtitle:   "开发心得分享"
-author:     "Fonzie"
 categories: 心得
 tags: [心得, tag]
 header-img: "img/drop-of-water-597109_1920.jpg"
