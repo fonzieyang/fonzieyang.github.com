@@ -55,7 +55,7 @@ layout: default
                             {% if postHasSimilar == false and hasSimilar.size < 6 and post != page and tag == thisTag %}
                                 {% if hasSimilar.size == 0 %}
                                 <h4>你可能还喜欢:</h4>
-                                <ul>
+                                <ul  style="list-style: none">
                                 {% endif %}
                                 <li class="relatedPost">
                                     <a href="{{ site.url }}{{ post.url }}">{{ post.title }}
