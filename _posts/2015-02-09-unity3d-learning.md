@@ -4,7 +4,7 @@ layout:     post
 title:      "Effective Unity3D"
 subtitle:   "u3d开发技巧"
 categories: 游戏开发
-tags: [Unity3D, tag]
+tags: [Unity3D]
 header-img: "img/unity3d2.jpg"
 
 ---
