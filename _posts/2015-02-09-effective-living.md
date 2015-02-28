@@ -97,3 +97,15 @@ evernote中，打tag（标签），会帮助我们记录。tag+搜索的方式�
 5. 用calendar记录提醒我们各种事务，并且是提前一两天就安排准备好。
 6. 把联系人放在google contact里，妈妈再也不用担心换sim卡了。
 
+---
+
+## 2015.2.28更新：
+因为gmail、dropbox在已经被墙了，下面是一些现在替换法方案：
+
+* calendar改用苹果帐号
+* task改用wunderlist
+* dropbox改用iCloud
+
+
+
+
