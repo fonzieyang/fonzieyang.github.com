@@ -1,7 +1,7 @@
 ---
 
 layout:     post
-title:      "手游框架设计&lt;&gt;"
+title:      "手游框架设计&lt;一&gt;"
 subtitle:   "过去两年的手游框架设计总结"
 categories: 游戏开发
 tags: [框架, GamePlay, tag]
@@ -11,66 +11,53 @@ header-img: "img/lf2.jpg"
 
 ## 业务层
 
-手游框架设计<零>中我们讲了整体的框架架构，这里我们更多谈谈业务层(GamePlay)的开发。
-![]({{ site.baseurl }}/img/framework-design/gameplay-layer.png)
+手游框架设计<零>中我们讲了整体的框架架构，这里开始，我们自底向上地浅析一下各个模块。
 
-### 游戏界面开发
+![]({{ site.baseurl }}/img/framework-design/engine-layer.jpg)
 
-### 1) 快速获取控件
+引擎层有很多可写，真要写得话绝对远远不是一篇博客可以讲完的。而且《手游框架》系列以(GamePlay)业务开发为主题，引擎层距离系列文章的主题太远，所以这里简单带过，以(hou)资(yan)源(wu)引(chi)用为主。
 
-这里可以把UI的制作通过编辑器交给美术完成界面的拼接，而后你直接用UI进行开发，到这里很多项目拿到UI都是写代码加载控件，比如：
+<br/>
+
+---
+
+<br/>
+
+这里推荐一个引擎开发百科全书**[《游戏引擎架构》](http://book.douban.com/subject/25815142/)**，方方面面都讲得很到位，顽皮狗工作室大神写的，翻译也是大神，国外已经出第二版了。
+
+<a href="http://book.douban.com/subject/25815142/">![](http://img3.douban.com/lpic/s27215120.jpg)</a>
+
+<br/>
+
+---
+
+<br/>
+
+引擎开发主要就是渲染了，对图形学感兴趣则可以看**[《游戏程序员养成计划》](http://www.cnblogs.com/clayman/archive/2009/05/17/1459001.html)**
+
+<a href="http://book.douban.com/subject/3213439/">![](http://img3.douban.com/lpic/s4551492.jpg)</a>
 
 
-~~~lua
-local label1 = GetUI(ui, "label1")
-local label2 = GetUI(ui, "label2")
-local label3 = GetUI(ui, "label3")
-local btn1   = GetUI(ui, "btn1")
+<br/>
 
-...
+---
 
-label1:setString("hi1")
-label2:setString("hi2")
-label3:setString("hi3")
-~~~
+<br/>
 
-这样写一大堆，但其实我们可以抽成一句就完成了，你从此只管直接用，比如：
 
-~~~lua
-UIManager.configUI(ui)
 
-ui.label1:setString("hi1")
-ui.label2:setString("hi2")
-ui.label3:setString("hi3")
-~~~
+觉得上面太难了，可以看这本我正在翻译的**[《Game Programming Algorithms and Techniques》](http://book.douban.com/subject/25779461/)**，一本挺不错的入门书籍，比如第一章就阐明了游戏程序最核心最本质的部分就是：**游戏循环**、**游戏时间管理**和**游戏对象模型**。
 
-其中UIManager:configUI的用途就是将控件中的所有名字查询出来配置好，原理很简单，能让我们非常快速地完成UI工作。
+<a href="http://book.douban.com/subject/25779461/">![](http://img3.douban.com/lpic/s27158014.jpg)</a>
 
-### 2) 约定优于配置
+<br/>
 
-在一个管理良好的游戏，不可能让你把资源写死在代码里面的，但是我们配置资源路径然后读取又很繁琐痛苦，这明明可以自动完成的事情，为什么这么麻烦呢？假如我们都通过约定，那么是不是就省去了大量的配置呢？
+---
 
-在过去，我们这样加载资源：
+<br/>
 
-~~~lua
--- 在某个地方统一配置
-resId = "path/res.png"
+对于**刚入门的新人**，可以看看这份[代码](https://github.com/fonzieyang/BalanceBall)。是我大学期间一个晚上帮同学做出来的毕业设计。主要看Framework部分，应该是这个世界上最简单的Sprite实现了吧。
 
--- 在另一个地方使用
-local res = loadRes(resId)
-....
-~~~
 
-现在：
 
-~~~lua
--- 在管理器中做好约定
-function ResMgr:createRes(str)
-	return loadRes("path/" .. str .. ".png")
-end
 
--- 还是直接用就可以，而且不用配置
-ResMgr:createRes("hero01")
-~~~
-
-看出区别了吗？前一种方式需要配置resId，类似Android的方式，需要自己生成代码或者手写一次路径配置，虽然能用，但很僵硬，不好改动。后一种会让代码知道最少的东西，不用去管路径，只要知道资源的名字，通过约定就给你找到资源。因为路径没有在逻辑中扩散，我们可以基于此，可以做很多的重定向工作，比如加密解密，比如拼图等等。为什么？因为这样足够抽象，符合语义，而且不需要重复自己。
