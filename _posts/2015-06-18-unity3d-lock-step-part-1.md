@@ -27,15 +27,15 @@ header-img: "img/unity-girl3.jpg"
 
 **帧同步回合**
 
-	帧同步回合可以由多个游戏回合组成。玩家在一个帧同步回合执行一个动作。帧同步回合长度会根据性能调整。目前硬编码为200ms。
+###***帧同步回合可以由多个游戏回合组成。玩家在一个帧同步回合执行一个动作。帧同步回合长度会根据性能调整。目前硬编码为200ms。***
 	
 **游戏回合**	
 
-	游戏回合就是游戏逻辑和物理模拟的更新。每个帧同步回合拥有的游戏回合次数是由性能控制的。目前硬编码为50ms，也就是每次帧同步回合有4次游戏回合。也就是每秒有20次游戏回合。
+###***游戏回合就是游戏逻辑和物理模拟的更新。每个帧同步回合拥有的游戏回合次数是由性能控制的。目前硬编码为50ms，也就是每次帧同步回合有4次游戏回合。也就是每秒有20次游戏回合。***
 	
 **动作**	
 
-	一个动作就是玩家发起的一个命令。比如说在某个区域内选中单位，或者移动选中单位到目的地。
+###***一个动作就是玩家发起的一个命令。比如说在某个区域内选中单位，或者移动选中单位到目的地。***
 	
 注意：我们将不使用unity3d的物理引擎。而是使用一个确定性的自定义引擎。在后续文章中会有实现。	
 
@@ -43,8 +43,8 @@ header-img: "img/unity-girl3.jpg"
 
 Unity3d的循环是运行在单线程下的。可以通过在这两个函数插入自定义代码：
 
-	* Update()
-	* FixedUpdate()
+* Update()
+* FixedUpdate()
 
 Unity3d的主循环每次遍历更新都会调用Update()。主循环会以最快速度运行，除非设置了固定的帧率。FixedUpdate()会根据设置每秒执行固定次数。在主循环遍历中，它会被调用零次或多次，取决于上次遍历所花费的时间。FixedUpdate()有着我们想要的行为，就是每次帧同步回合都执行固定时长。但是，FixedUpdate()的频率只能在运行之前设置好。而我们希望可以根据性能调节我们的游戏帧率。
 
@@ -52,7 +52,7 @@ Unity3d的主循环每次遍历更新都会调用Update()。主循环会以最�
 
 这个实现有着与FixedUpdate()在Update()函数中执行所类似的逻辑。主要不同的地方在于，我们可以调整频率。这是通过增加"累计时间"来完成的。每次调用Update()函数，上次遍历所花费的时间会添加到其中。这就是Time.deltaTime。如果累计时间大于我们的固定游戏回合帧率(50ms)，那么我们就会调用gameframe()。我们每次调用gameframe()都会在累计时间上减去50ms，所以我们一直调用，知道累计时间小于50ms。
 
-~~~javascript
+{% highlight C++ %}
 private float AccumilatedTime = 0f;
  
 private float FrameLength = 0.05f; //50 miliseconds
@@ -68,11 +68,11 @@ public void Update() {
         AccumilatedTime = AccumilatedTime - FrameLength;
     }
 }
-~~~
+{% endhighlight %}
 
 我们跟踪当前帧同步回合中游戏帧的数量。每当我们在帧同步回合中达到我们想要的游戏回合次数，我们就会更新帧同步回合到下一轮。如果帧同步还不能到下一轮，我们就不能增加游戏帧，而且我们会在下一次同样执行帧同步检查。
 
-~~~javascript
+{% highlight C++ %}
 private void GameFrameTurn() {
     //first frame is used to process actions
     if(GameFrame == 0) {
@@ -90,11 +90,11 @@ private void GameFrameTurn() {
         }
     }
 }
-~~~
+{% endhighlight %}
 
 在游戏回合中，物理模拟会更新而且我们的游戏逻辑也会更新。游戏逻辑是通过接口(IHasGameFrame)来实现的，而且添加这个对象到集合中，然后我们就可以进行遍历。
 
-~~~javascript
+{% highlight C++ %}
 private void GameFrameTurn() {
     //first frame is used to process actions
     if(GameFrame == 0) {
@@ -123,7 +123,7 @@ private void GameFrameTurn() {
         }
     }
 }
-~~~
+{% endhighlight %}
 
 IHasGameFrame接口有一个方法叫做GameFrameTurn，它以当前每秒游戏帧的个数为参数。一个具体的带游戏逻辑的对象应该基于GameFramesPerSecond来计算。比如说，如果一个单位正在攻击另一个单位，而且他攻击频率为每秒钟10点伤害，你可能会通过将它除以GameFramesPerSecond来添加伤害。而GameFramesPerSecond会根据性能进行调整。
 
@@ -138,7 +138,7 @@ IHasGameFrame接口也有属性标记着结束。这使得实现IHasGameFrame的
 
 我们有两个对象，ConfirmedActions和PendingActions。这两个都有各自可能收到消息的集合。在我们进入下一个回合之前，我们会检查这两个对象。
 
-~~~javascript
+{% highlight C++ %}
 private bool NextTurn() {       
     if(confirmedActions.ReadyForNextTurn() && pendingActions.ReadyForNextTurn()) {
         //increment the turn ID
@@ -153,7 +153,7 @@ private bool NextTurn() {
      
     return false;
 }
-~~~
+{% endhighlight %}
 
 ### 动作
 
@@ -161,7 +161,7 @@ private bool NextTurn() {
 
 当发送动作到其他玩家的时候，动作实例会序列化为字节数组，然后被其他玩家反序列化。一个默认的"非动作"对象会在用户没有执行任何操作的时候发送。而其他则会根据特定游戏逻辑而定。这里是一个创建新单位的动作：
 
-~~~javascript
+{% highlight C++ %}
 using System;
 using UnityEngine;
  
@@ -181,7 +181,7 @@ public class CreateUnit : IAction
         b.SpawnUnit();
     }
 }
-~~~
+{% endhighlight %}
 
 这个动作会依赖于SceneManager的静态引用。如果你不喜欢这个实现，可以修改IAction接口，使得ProcessAction接收一个SceneManager实例。
 
