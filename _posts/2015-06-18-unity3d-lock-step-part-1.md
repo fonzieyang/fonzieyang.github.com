@@ -1,7 +1,7 @@
 ---
 
 layout:     post
-title:      "Unity3D中实现帧同步 - Part 1"
+title:      "「译」Unity3D中实现帧同步 - Part 1"
 subtitle:   ""
 categories: 游戏开发
 tags: [Unity3d, tag]
