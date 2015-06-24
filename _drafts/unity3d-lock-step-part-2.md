@@ -10,7 +10,9 @@ header-img: "img/unity-girl4.jpg"
 ---
 
 
-# Unity3D中实现帧同步 - Part 2
+
+[Lockstep Implementation in Unity3D – Part 2](http://clintonbrennan.com/2014/04/lockstep-implementation-in-unity3d-part-2/)
+
 
 ### 概览
 
