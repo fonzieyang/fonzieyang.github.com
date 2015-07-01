@@ -16,5 +16,5 @@ pygments: true
 markdown: kramdown
 highlighter: pygments
 permalink: /:title
-paginate: 5
+paginate: 10
 exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
