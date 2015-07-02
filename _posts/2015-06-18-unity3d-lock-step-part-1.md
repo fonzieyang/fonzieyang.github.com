@@ -4,7 +4,7 @@ layout:     post
 title:      "「译」Unity3D中实现帧同步 - Part 1"
 subtitle:   ""
 categories: 游戏开发
-tags: [Unity3d, tag]
+tags: [Unity3D, GamePlay, tag]
 header-img: "img/unity-girl3.jpg"
 
 ---
