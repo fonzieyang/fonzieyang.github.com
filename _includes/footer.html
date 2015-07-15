@@ -65,7 +65,17 @@
                             </span>
                         </a>
                     </li>
-                    {% endif %}                                              
+                    {% endif %} 
+                    {% if site.zhihu_username %}
+                    <li>
+                        <a href="https://www.zhihu.com/people/{{ site.zhihu_username }}">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <img class="fa" style="cursor:pointer;" src={{ site.baseurl }}"/img/iconfont-zhihu.png"></img>
+                            </span>
+                        </a>                        
+                    </li>       
+                    {% endif %}                                     
                 </ul>
                 <p class="copyright text-muted">Copyright &copy; {{ site.title }} {{ site.time | date: '%Y' }}</p>
             </div>
