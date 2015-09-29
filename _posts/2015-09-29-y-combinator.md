@@ -71,18 +71,20 @@ lambda f. (lambda x. (f(x x)) lambda x. (f(x x)))
 
 看，完美！证明了lambda只需要alpha/beta/eta三条规则而不需要命名。
 
-## 相关资料，从易到难排序
+---
+
+### 相关资料，从易到难排序
 
 
-* ***[g9的lambda calculus系列](http://blog.csdn.net/g9yuayon/)*** `有很多lambda的入门讲解，幽默风趣`
-* ***[The Little Schemer](http://book.douban.com/subject/1632977/)*** `手把手学lambda`
-* ***[The Seasoned Schemer](http://book.douban.com/subject/1726083/)*** `手把手2`
-* ***[SICP](http://book.douban.com/subject/1451622/)*** `不用多说，看书评`
-* ***[MIT讲SICP](http://groups.csail.mit.edu/mac/classes/6.001/abelson-sussman-lectures/)*** `MIT的课，值得一看`
+* [g9的lambda calculus系列](http://blog.csdn.net/g9yuayon/) `有很多lambda的入门讲解，幽默风趣`
+* [The Little Schemer](http://book.douban.com/subject/1632977/) `手把手学lambda`
+* [The Seasoned Schemer](http://book.douban.com/subject/1726083/) `手把手2`
+* [SICP](http://book.douban.com/subject/1451622/) `不用多说，看书评`
+* [MIT讲SICP](http://groups.csail.mit.edu/mac/classes/6.001/abelson-sussman-lectures/) `MIT的课，值得一看`
 
-## 其他相关资料
+### 其他相关资料
 
-* ***[康托尔、哥德尔、图灵——永恒的金色对角线](http://mindhacks.cn/2006/10/15/cantor-godel-turing-an-eternal-golden-diagonal/)*** `讲了图灵机的起源--对角线法`
-* ***[对角线方法之后的故事](http://www.matrix67.com/blog/archives/4812)*** `关于对角线法的误用`
-* ***[计算的本质](http://book.douban.com/subject/26148763/)*** `手把手用Ruby讲图灵机，比较有趣，通俗易懂`
-* ***[图灵的秘密](http://book.douban.com/subject/10779604/)*** `通俗易懂，引用图灵论文，有理有据。图灵机纸条部分比较枯燥` 
+* [康托尔、哥德尔、图灵——永恒的金色对角线](http://mindhacks.cn/2006/10/15/cantor-godel-turing-an-eternal-golden-diagonal/) `讲了图灵机的起源--对角线法`
+* [对角线方法之后的故事](http://www.matrix67.com/blog/archives/4812) `关于对角线法的误用`
+* [计算的本质](http://book.douban.com/subject/26148763/) `手把手用Ruby讲图灵机，比较有趣，通俗易懂`
+* [图灵的秘密](http://book.douban.com/subject/10779604/) `通俗易懂，引用图灵论文，有理有据。图灵机纸条部分比较枯燥` 
