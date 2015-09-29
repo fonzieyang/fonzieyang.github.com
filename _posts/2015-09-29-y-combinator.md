@@ -17,14 +17,14 @@ header-img: "img/WQtuk.jpg"
 let power = lambda n. IF_Else n==0 1 n*power(n-1)
 {% endhighlight %}
 
-然而，在"纯"lambda演算中，是没有let关键字的。我们需要换个方法，如果直接的不行，那么我们可以尝试间接的。很容易能想到通过参数把自己传给自己：
+然而，在“纯”lambda演算中，是没有let关键字的，但我们可以暂时忘记这件事。我们需要换个方法，如果直接的不行，那么我们可以尝试间接的。很容易能想到通过参数把自己传给自己：
 
 {% highlight scheme %}
 let P = lambda self n. If_Else n==0 1 n*self(self, n-1)
 P(P, 3)
 {% endhighlight %}
 
-这么做就显得很不优雅，我们要想一个办法，能够通用的把自己传给自己。就像上面一样。我们试着构造一下，把斐波那契数列的逻辑替换为任意函数：
+如果每次递归都要这么写，就显得很不优雅。我们要想一个办法，能够通用的把自己传给自己。就像上面一样。我们试着构造一下，把斐波那契数列的逻辑替换为任意函数：
 
 {% highlight scheme %}
 let gen = lambda self. AnyFunction(self(self))
@@ -45,7 +45,7 @@ let AnyFunction = lambda self n. If_Else n==0 1 n*self(n-1)
 gen(gen) => AnyFunction(gen(gen))
 {% endhighlight %}
 
-可能你会疑问，gen(gen)为什么能够表达自己呢？因为gen(gen)=>AnyFunction(gen(gen))，它能够返回AnyFunction自身，这就得到自己了。并且这时会把这个gen(gen)再传给AnyFunction。而gen(gen)不到求值的时候都不展开，因此gen(gen)没有被调用时，没有任何作用，但是一旦AnyFunction内部调用了传进来的自身，那么就进行求值得到。通俗来讲，***与其说gen(gen)是自身，还不如说这是一个把能够得到自己，并且把gen(gen)再次传入的函数。***
+可能你会疑问，gen(gen)为什么能够表达自己呢？因为gen(gen)展开为AnyFunction(gen(gen))，它能够返回AnyFunction自身，这就得到自己了。并且这时会把这个gen(gen)再传给AnyFunction。而gen(gen)不求值时是不展开的，因此gen(gen)没有被调用时，没有任何作用，但是一旦AnyFunction内部调用了传进来的gen(gen)，那么就进行求值再次得到“自己”。通俗来讲，***与其说gen(gen)是自身，还不如说这是一个把能够得到自己，并且把gen(gen)再次传入的函数。***
 
 在理解这个机制之后，通用的递归函数已经到手。封装一下就轻而易举了，这就是传说中的Y组合子：
 
