@@ -28,9 +28,12 @@ def main():
 
     # 根据字典创建ical
     # 创建事件，填入时间
+    print("import icalendar")
     from icalendar import Calendar, Event
     cal = Calendar()
+    print("import datetime")
     from datetime import datetime
+    print("loop task list")
     for entry in entryList:
         name = entry['Task']
         project = entry['Project']
