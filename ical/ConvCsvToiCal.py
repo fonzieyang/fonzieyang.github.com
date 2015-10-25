@@ -31,7 +31,6 @@ def main():
     from icalendar import Calendar, Event
     cal = Calendar()
     from datetime import datetime
-    import pytz
     for entry in entryList:
         name = entry['Task']
         project = entry['Project']
