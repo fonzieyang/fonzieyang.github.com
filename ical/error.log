@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "ConvCsvToiCal.py", line 86, in <module>
-    main()
-  File "ConvCsvToiCal.py", line 35, in main
-    from icalendar import Calendar, Event
-ImportError: No module named icalendar
