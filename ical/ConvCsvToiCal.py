@@ -8,6 +8,9 @@ import csv
 
 def main():
 
+    import sys
+    print sys.path
+
     # 导出csv
 
     # 根据csv制作字典
