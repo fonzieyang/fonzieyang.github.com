@@ -1,4 +1,5 @@
 #!/bin/bash
+echo test > ~/Downloads/test
 
 osascript exportTyme.scpt
 mv ~/Downloads/tyme_for_cal.csv ./tyme_for_cal.csv
