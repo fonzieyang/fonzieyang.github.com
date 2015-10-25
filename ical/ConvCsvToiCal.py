@@ -59,7 +59,7 @@ def main():
 
     # 写入ical
     import os
-    f = open('~/tyme.ics', 'wb')
+    f = open('tyme.ics', 'wb')
     f.write(cal.to_ical())
     f.close()
 
