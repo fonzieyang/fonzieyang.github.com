@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "ConvCsvToiCal.py", line 88, in <module>
+    main()
+  File "ConvCsvToiCal.py", line 62, in main
+    event.add('dtstart', datetime(date[0], date[1], date[2], startTime[0], startTime[1], 0))
+ValueError: hour must be in 0..23
