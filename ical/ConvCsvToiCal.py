@@ -82,6 +82,8 @@ def convertTimeFormat(timeStr):
         tt[index] = int(tt[index])
     if u'下午' == us[0:2]:
         tt[0] += 12
+    if tt[0] == 24:
+        tt[0] = 12
     return tt
 
 if __name__ == '__main__':
