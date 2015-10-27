@@ -5,13 +5,12 @@
 #usage: edit steps and ledongli's uid(u need to download this app) .That would be ok .Good luck. ^_^
 
 import csv
+import time
+
+today = list(time.localtime())
+print 'today is', today
 
 def main():
-
-    # crontab has wrong sys.path
-    import sys
-    print sys.path
-    sys.path = ['/Users/yang/Documents/fonzieyang.github.com/ical', '/usr/local/Cellar/python/2.7.8_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/setuptools-5.4.2-py2.7.egg', '/usr/local/Cellar/python/2.7.8_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/pip-1.5.6-py2.7.egg', '/usr/local/Cellar/python/2.7.8_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/Pygments-2.0.2-py2.7.egg', '/usr/local/Cellar/python/2.7.8_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/gyp-0.1-py2.7.egg', '/usr/local/lib/python2.7/site-packages/setuptools-5.4.2-py2.7.egg', '/usr/local/lib/python2.7/site-packages/pip-1.5.6-py2.7.egg', '/usr/local/lib/python2.7/site-packages/Pygments-2.0.2-py2.7.egg', '/usr/local/lib/python2.7/site-packages/gyp-0.1-py2.7.egg', '/usr/local/Cellar/python/2.7.8_1/Frameworks/Python.framework/Versions/2.7/lib/python27.zip', '/usr/local/Cellar/python/2.7.8_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7', '/usr/local/Cellar/python/2.7.8_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin', '/usr/local/Cellar/python/2.7.8_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac', '/usr/local/Cellar/python/2.7.8_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages', '/usr/local/Cellar/python/2.7.8_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-tk', '/usr/local/Cellar/python/2.7.8_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-old', '/usr/local/Cellar/python/2.7.8_1/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-dynload', '/Library/Python/2.7/site-packages', '/usr/local/lib/python2.7/site-packages']
 
     # 导出csv
 
@@ -41,6 +40,7 @@ def main():
     print("loop task list")
     for entry in entryList:
         name = entry['Task']
+
         project = entry['Project']
         fullName = name + '#' + project
         date = entry['Date']
@@ -56,6 +56,12 @@ def main():
         date[0] += 2000
         print fullName, date, startTime, endTime, note
         
+        # 过滤不是今天的通用定时器
+        if name == '通用定时器':
+            if today[0] != date[0] or today[1] != date[1] or today[2] != date[2]:
+                print 'pass this entry'
+                continue
+
         # 创建事件
         event = Event()
         event.add('summary', fullName)
