@@ -13,9 +13,10 @@ linkedin_username: lauhonyeung
 zhihu_username: liu-han-yang
 
 # Build settings
-pygments: true
 markdown: kramdown
 highlighter: pygments
 permalink: /:title
+gems: [jekyll-paginate]
+paginate_path: "page:num"
 paginate: 10
 exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
