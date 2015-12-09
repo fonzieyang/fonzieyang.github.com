@@ -14,7 +14,7 @@ zhihu_username: liu-han-yang
 
 # Build settings
 markdown: kramdown
-highlighter: pygments
+highlighter: true
 permalink: /:title
 gems: [jekyll-paginate]
 paginate_path: "page:num"
