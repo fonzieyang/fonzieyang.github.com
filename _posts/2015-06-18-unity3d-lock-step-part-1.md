@@ -1,7 +1,7 @@
 ---
 
 layout:     post
-title:      "「译」Unity3D中实现帧同步 - Part 1"
+title:      "Unity3D中实现帧同步 - Part 1"
 subtitle:   ""
 categories: 游戏开发
 tags: [Unity3D, GamePlay, tag]
@@ -53,7 +53,7 @@ Unity3d的主循环每次遍历更新都会调用Update()。主循环会以最�
 
 这个实现有着与FixedUpdate()在Update()函数中执行所类似的逻辑。主要不同的地方在于，我们可以调整频率。这是通过增加"累计时间"来完成的。每次调用Update()函数，上次遍历所花费的时间会添加到其中。这就是Time.deltaTime。如果累计时间大于我们的固定游戏回合帧率(50ms)，那么我们就会调用gameframe()。我们每次调用gameframe()都会在累计时间上减去50ms，所以我们一直调用，知道累计时间小于50ms。
 
-{% highlight C++ %}
+```
 private float AccumilatedTime = 0f;
  
 private float FrameLength = 0.05f; //50 miliseconds
@@ -69,11 +69,11 @@ public void Update() {
         AccumilatedTime = AccumilatedTime - FrameLength;
     }
 }
-{% endhighlight %}
+```
 
 我们跟踪当前帧同步回合中游戏帧的数量。每当我们在帧同步回合中达到我们想要的游戏回合次数，我们就会更新帧同步回合到下一轮。如果帧同步还不能到下一轮，我们就不能增加游戏帧，而且我们会在下一次同样执行帧同步检查。
 
-{% highlight C++ %}
+```
 private void GameFrameTurn() {
     //first frame is used to process actions
     if(GameFrame == 0) {
@@ -91,11 +91,11 @@ private void GameFrameTurn() {
         }
     }
 }
-{% endhighlight %}
+```
 
 在游戏回合中，物理模拟会更新而且我们的游戏逻辑也会更新。游戏逻辑是通过接口(IHasGameFrame)来实现的，而且添加这个对象到集合中，然后我们就可以进行遍历。
 
-{% highlight C++ %}
+```
 private void GameFrameTurn() {
     //first frame is used to process actions
     if(GameFrame == 0) {
@@ -124,7 +124,7 @@ private void GameFrameTurn() {
         }
     }
 }
-{% endhighlight %}
+```
 
 IHasGameFrame接口有一个方法叫做GameFrameTurn，它以当前每秒游戏帧的个数为参数。一个具体的带游戏逻辑的对象应该基于GameFramesPerSecond来计算。比如说，如果一个单位正在攻击另一个单位，而且他攻击频率为每秒钟10点伤害，你可能会通过将它除以GameFramesPerSecond来添加伤害。而GameFramesPerSecond会根据性能进行调整。
 
@@ -139,7 +139,7 @@ IHasGameFrame接口也有属性标记着结束。这使得实现IHasGameFrame的
 
 我们有两个对象，ConfirmedActions和PendingActions。这两个都有各自可能收到消息的集合。在我们进入下一个回合之前，我们会检查这两个对象。
 
-{% highlight C++ %}
+```
 private bool NextTurn() {       
     if(confirmedActions.ReadyForNextTurn() && pendingActions.ReadyForNextTurn()) {
         //increment the turn ID
@@ -154,7 +154,7 @@ private bool NextTurn() {
      
     return false;
 }
-{% endhighlight %}
+```
 
 ### 动作
 
@@ -162,7 +162,7 @@ private bool NextTurn() {
 
 当发送动作到其他玩家的时候，动作实例会序列化为字节数组，然后被其他玩家反序列化。一个默认的"非动作"对象会在用户没有执行任何操作的时候发送。而其他则会根据特定游戏逻辑而定。这里是一个创建新单位的动作：
 
-{% highlight C++ %}
+```
 using System;
 using UnityEngine;
  
@@ -182,7 +182,7 @@ public class CreateUnit : IAction
         b.SpawnUnit();
     }
 }
-{% endhighlight %}
+```
 
 这个动作会依赖于SceneManager的静态引用。如果你不喜欢这个实现，可以修改IAction接口，使得ProcessAction接收一个SceneManager实例。
 

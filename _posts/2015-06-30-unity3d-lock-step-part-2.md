@@ -1,7 +1,7 @@
 ---
 
 layout:     post
-title:      "「译」Unity3D中实现帧同步 - Part 2"
+title:      "Unity3D中实现帧同步 - Part 2"
 subtitle:   ""
 categories: 游戏开发
 tags: [Unity3D, GamePlay, tag]
@@ -32,7 +32,7 @@ $$newAverage = currentAverage * (1 – w) + newValue * ( w)$$
 
 在我的实现中，我设置w=0.1。而且还会跟踪每个玩家的平均数，而且总是使用所有玩家当中的最大值。这里是增加新值的方法：
 
-{% highlight C++ %}
+```
 public void Add(int newValue, int playerID) {
     if(newValue > playerAverages[playerID]) {
         //rise quickly
@@ -42,7 +42,7 @@ public void Add(int newValue, int playerID) {
         playerAverages[playerID] = (playerAverages[playerID] * (9) + newValue * (1)) / 10;
     }
 }
-{% endhighlight %}
+```
 
 为了保证计算结果的确定性，计算只使用整数。因此公式调整如下：
 
@@ -57,7 +57,7 @@ $$newAverage = (currentAverage * (10 – w) + newValue * ( w)) / 10$$
 
 每次游戏帧更新的时间是由运行时间平均数决定的。如果游戏帧要变得更长，那么我们需要降低每次帧同步回合更新游戏帧的次数。另一方面，如果游戏帧执行得更快了，每次帧同步回合可以更新游戏帧的次数也多了。对于每次帧同步回合，最长的游戏帧会被添加到平均数中。每次帧同步回合的第一个游戏帧都包含了处理动作的时间。这里使用Stopwatch来计算流逝的时间。
 
-{% highlight C++ %}
+```
 private void ProcessActions() {
     //process action should be considered in runtime performance
     gameTurnSW.Start ();
@@ -93,7 +93,7 @@ private void GameFrameTurn() {
     //clear for the next frame
     gameTurnSW.Reset();
 }
-{% endhighlight %}
+```
 
 注意到我们也用到了Time.deltaTime。使用这个可能会在游戏以固定帧率执行的情况下与上一帧时间重叠。但是，我们需要用到它，这使得Unity为我们所做的渲染以及其他事情都是可测量的。这个重叠是可接受的，因为只是需要更大的缓冲区而已。
 
@@ -101,7 +101,7 @@ private void GameFrameTurn() {
 
 拿什么作为网络平均数在这里不太明确。我最终使用了Stopwatch计算从玩家发送数据包到玩家确认动作的时间。这个帧同步模型发送的动作会在未来两个回合中执行。为了结束帧同步回合，我们需要所有玩家都确认了这个动作。在这之后，我们可能会有两个动作等待对方确认。为了解决这个问题，用到了两个Stopwatch。一个用于当前动作，另一个用于上一个动作。这被封装在ConfirmActions类当中。当帧同步回合往下走，上一个动作的Stopwatch会成为这一个动作的Stopwatch，而旧的"当前动作Stopwatch"会被复用作为新的"上一个动作Stopwatch"。
 
-{% highlight C++ %}
+```
 public class ConfirmedActions
 {
 ...
@@ -119,11 +119,11 @@ public class ConfirmedActions
         currentSW.Reset ();
     }
 }
-{% endhighlight %}
+```
 
 每当有确认进来，我们会确认我们接收了所有的确认，如果接收到了，那么就暂停Stopwatch。
 
-{% highlight C++ %}
+```
 public void ConfirmAction(int confirmingPlayerID, int currentLockStepTurn, int confirmedActionLockStepTurn) {
     if(confirmedActionLockStepTurn == currentLockStepTurn) {
         //if current turn, add to the current Turn Confirmation
@@ -148,13 +148,13 @@ public void ConfirmAction(int confirmingPlayerID, int currentLockStepTurn, int c
         log.Debug ("WARNING!!!! Unexpected lockstepID Confirmed : " + confirmedActionLockStepTurn + " from player: " + confirmingPlayerID);
     }
 }
-{% endhighlight %}
+```
 
 ### 发送平均数
 
 为了让一个客户端向其他客户端发送平均数，Action接口修改为一个有两个字段的抽象类。
 
-{% highlight C++ %}
+```
 [Serializable]
 public abstract class Action
 {
@@ -163,11 +163,11 @@ public abstract class Action
  
     public virtual void ProcessAction() {}
 }
-{% endhighlight %}
+```
 
 每当处理动作，这些数字会加到运行平均数。然后帧同步回合以及游戏帧回合开始更新
 
-{% highlight C++ %}
+```
 private void UpdateGameFrameRate() {
     //log.Debug ("Runtime Average is " + runtimeAverage.GetMax ());
     //log.Debug ("Network Average is " + networkAverage.GetMax ());
@@ -194,7 +194,7 @@ private void UpdateGameFrameRate() {
  
     PerformanceLog.LogGameFrameRate(LockStepTurnID, networkAverage, runtimeAverage, GameFramesPerSecond, LockstepsPerSecond, GameFramesPerLockstepTurn);
 }
-{% endhighlight %}
+```
 
 ### 更新：支持单个玩家
 
