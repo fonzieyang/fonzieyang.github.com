@@ -13,10 +13,14 @@ linkedin_username: lauhonyeung
 zhihu_username: liu-han-yang
 
 # Build settings
-markdown: kramdown
+#markdown: kramdown
 highlighter: pygments
 permalink: /:title
 gems: [jekyll-paginate]
 paginate_path: "page:num"
 paginate: 10
 exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+
+markdown: redcarpet
+redcarpet:
+extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
