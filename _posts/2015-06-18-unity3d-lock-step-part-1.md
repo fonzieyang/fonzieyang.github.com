@@ -53,7 +53,7 @@ Unity3d的主循环每次遍历更新都会调用Update()。主循环会以最�
 
 这个实现有着与FixedUpdate()在Update()函数中执行所类似的逻辑。主要不同的地方在于，我们可以调整频率。这是通过增加"累计时间"来完成的。每次调用Update()函数，上次遍历所花费的时间会添加到其中。这就是Time.deltaTime。如果累计时间大于我们的固定游戏回合帧率(50ms)，那么我们就会调用gameframe()。我们每次调用gameframe()都会在累计时间上减去50ms，所以我们一直调用，知道累计时间小于50ms。
 
-```
+```C++
 private float AccumilatedTime = 0f;
  
 private float FrameLength = 0.05f; //50 miliseconds
