@@ -17,7 +17,7 @@ header-img: "img/WQtuk.jpg"
 let power = lambda n. IF_Else n==0 1 n*power(n-1)
 {% endhighlight %}
 
-然而，在“纯”lambda演算中，是没有let关键字的，但我们可以暂时忘记这件事。我们需要换个方法，如果直接的不行，那么我们可以尝试间接的。很容易能想到通过参数把自己传给自己：
+然而，在“纯”lambda演算中，是没有let关键字的，但我们可以暂时忘记这件事。我们需要换个方法进行递归，如果直接的递归不可行，那么我们可以尝试间接的。很容易能想到通过参数把自己传给自己：
 
 {% highlight scheme %}
 let P = lambda self n. If_Else n==0 1 n*self(self, n-1)
