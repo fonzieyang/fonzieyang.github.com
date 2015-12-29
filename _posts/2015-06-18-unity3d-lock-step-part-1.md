@@ -9,8 +9,6 @@ header-img: "img/unity-girl3.jpg"
 
 ---
 
-[Lockstep Implementation in Unity3D](http://clintonbrennan.com/2013/12/lockstep-implementation-in-unity3d/)
-
 
 在帧同步模型中，每个客户端都会对整个游戏世界进行模拟。这种方法的好处在于减少了需要发送的信息。帧同步只需要发送用户的输入信息，而对于反过来的中心服务器模型来说，单位的信息则发送越频繁越好。
 
@@ -190,3 +188,4 @@ public class CreateUnit : IAction
 
 [Bitbucket – Sample Lockstep](https://bitbucket.org/brimock/lockstep-sample/overview)
 
+### [英文原文链接](http://clintonbrennan.com/2013/12/lockstep-implementation-in-unity3d/)

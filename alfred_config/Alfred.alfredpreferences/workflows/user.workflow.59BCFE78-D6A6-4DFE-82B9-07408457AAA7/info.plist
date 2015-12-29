@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string></string>
+	<key>connections</key>
+	<dict>
+		<key>1856D15B-A2EA-484B-B28D-3D007DA6228D</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>8FC7D72D-0D85-4AA0-AE31-84AE447AB0FD</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>24Says</string>
+	<key>description</key>
+	<string>Call Number from iPhone</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Yosemite Phone</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>tell application "Contacts"	set inputContact to "{query}"	set peopleCount to (count every person)	repeat with i from 1 to peopleCount		set thisPerson to (first name of person i) as string		if thisPerson = inputContact then			set phoneNumber to (get value of phone of person i) as string
+			do shell script "open 'tel://"&amp; phoneNumber &amp;" '"			exit repeat		end if	end repeat
+	quitend tellif thisPerson is not inputContact then	do shell script "open 'tel://{query}'"end if</string>
+				<key>type</key>
+				<integer>6</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>8FC7D72D-0D85-4AA0-AE31-84AE447AB0FD</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>call</string>
+				<key>subtext</key>
+				<string>Call Number from iPhone</string>
+				<key>text</key>
+				<string>Yosemite Phone</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>1856D15B-A2EA-484B-B28D-3D007DA6228D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>在 Alfred 官方支持从 Contacts 直接拨号前，该 Workflows 仅为满足个人需求而写，并非通用于任何人，所以请根据以下说明自行判断其可用性。
+
+-  功能：
+a. 可输内容支持「人名」和「号码」。
+b. 「人名」会匹配 Contacts 中已有的联系人，若存在则会拨打该号码。
+c. 「号码」则直接进行拨打。
+
+- 说明：
+a. 「人名」目前仅根据 First Name 来匹配 Contacts。
+b. 因读取 First Name 需启动 Contacts，固「拨号」过程会根据机器当前性能有一定延迟。
+
+本人非开发人员，边学边写 AppleScript 纯属兴趣，欢迎代码达人指正和完善。</string>
+	<key>uidata</key>
+	<dict>
+		<key>1856D15B-A2EA-484B-B28D-3D007DA6228D</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>8FC7D72D-0D85-4AA0-AE31-84AE447AB0FD</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>https://github.com/24says/Alfred</string>
+</dict>
+</plist>
