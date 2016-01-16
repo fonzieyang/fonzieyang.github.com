@@ -2,7 +2,7 @@
 
 layout:     post
 title:      "贯彻单点真理，打造KISS项目"
-subtitle:   ""
+subtitle:   "程序设计就是语言设计"
 categories: 心得
 tags: [心得, tag]
 header-img: "img/drop-of-water-597109_1920.jpg"

@@ -1,11 +1,11 @@
 ---
 
 layout:     post
-title:      "Unity自定义角色控制器 Part 2"
+title:      "Unity超级角色控制器 - Part 2"
 subtitle:   "具体实现"
 categories: 游戏开发
 tags: [Unity3D, GamePlay, tag]
-header-img: "img/unity-girl4.jpg"
+header-img: "img/super-mario-3d-world.jpg"
 
 ---
 

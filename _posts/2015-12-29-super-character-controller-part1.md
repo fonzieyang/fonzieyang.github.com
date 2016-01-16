@@ -1,11 +1,11 @@
 ---
 
 layout:     post
-title:      "Unity自定义角色控制器 Part 1"
+title:      "Unity超级角色控制器 - Part 1"
 subtitle:   "碰撞处理"
 categories: 游戏开发
 tags: [Unity3D, GamePlay, tag]
-header-img: "img/character-controller-title.jpg"
+header-img: "img/super-mario-3d-world.jpg"
 
 ---
 
