@@ -23,34 +23,34 @@ using System;
 using System.Collections.Generic;
  
 public class SuperCharacterController : MonoBehaviour {
- 
- [SerializeField]
- float radius = 0.5f;
- 
- private bool contact;
- 
- // Update is called once per frame
- void Update () {
- 
- contact = false;
- 
- foreach (Collider col in Physics.OverlapSphere(transform.position, radius))
- {
- Vector3 contactPoint = col.ClosestPointOnBounds(transform.position);
- 
- Vector3 v = transform.position - contactPoint;
- 
- transform.position += Vector3.ClampMagnitude(v, Mathf.Clamp(radius - v.magnitude, 0, radius));
- 
- contact = true;
- }
- }
- 
- void OnDrawGizmos()
- {
- Gizmos.color = contact ? Color.cyan : Color.yellow;
- Gizmos.DrawWireSphere(transform.position, radius);
- }
+	 
+	[SerializeField]
+	float radius = 0.5f;
+	 
+	private bool contact;
+	 
+	// Update is called once per frame
+	void Update () {
+		 
+		contact = false;
+		 
+		foreach (Collider col in Physics.OverlapSphere(transform.position, radius))
+		{
+			Vector3 contactPoint = col.ClosestPointOnBounds(transform.position);
+			 
+			Vector3 v = transform.position - contactPoint;
+			 
+			transform.position += Vector3.ClampMagnitude(v, Mathf.Clamp(radius - v.magnitude, 0, radius));
+			 
+			contact = true;
+		}
+	}
+	 
+	void OnDrawGizmos()
+	{
+		Gizmos.color = contact ? Color.cyan : Color.yellow;
+		Gizmos.DrawWireSphere(transform.position, radius);
+	}
 }
 {% endhighlight %}
 
@@ -73,22 +73,22 @@ using UnityEngine;
 using System.Collections;
  
 public static class DebugDraw {
- 
- public static void DrawMarker(Vector3 position, float size, Color color, float duration, bool depthTest = true)
- {
- Vector3 line1PosA = position + Vector3.up * size * 0.5f
- Vector3 line1PosB = position - Vector3.up * size * 0.5f;
- 
- Vector3 line2PosA = position + Vector3.right * size * 0.5f;
- Vector3 line2PosB = position - Vector3.right * size * 0.5f;
- 
- Vector3 line3PosA = position + Vector3.forward * size * 0.5f;
- Vector3 line3PosB = position - Vector3.forward * size * 0.5f;
- 
- Debug.DrawLine(line1PosA, line1PosB, color, duration, depthTest);
- Debug.DrawLine(line2PosA, line2PosB, color, duration, depthTest);
- Debug.DrawLine(line3PosA, line3PosB, color, duration, depthTest);
- }
+	 
+	public static void DrawMarker(Vector3 position, float size, Color color, float duration, bool depthTest = true)
+	{
+		Vector3 line1PosA = position + Vector3.up * size * 0.5f
+		Vector3 line1PosB = position - Vector3.up * size * 0.5f;
+		 
+		Vector3 line2PosA = position + Vector3.right * size * 0.5f;
+		Vector3 line2PosB = position - Vector3.right * size * 0.5f;
+		 
+		Vector3 line3PosA = position + Vector3.forward * size * 0.5f;
+		Vector3 line3PosB = position - Vector3.forward * size * 0.5f;
+		 
+		Debug.DrawLine(line1PosA, line1PosB, color, duration, depthTest);
+		Debug.DrawLine(line2PosA, line2PosB, color, duration, depthTest);
+		Debug.DrawLine(line3PosA, line3PosB, color, duration, depthTest);
+	}
 }
 {% endhighlight %}
 
@@ -97,15 +97,15 @@ public static class DebugDraw {
 {% highlight C# %}
 foreach (Collider col in Physics.OverlapSphere(transform.position, radius))
 {
-Vector3 contactPoint = col.ClosestPointOnBounds(transform.position);
- 
-DebugDraw.DrawMarker(contactPoint, 2.0f, Color.red, 0.0f, false);
- 
-Vector3 v = transform.position - contactPoint;
- 
-transform.position += Vector3.ClampMagnitude(v, Mathf.Clamp(radius - v.magnitude, 0, radius));
- 
-contact = true;
+	Vector3 contactPoint = col.ClosestPointOnBounds(transform.position);
+	 
+	DebugDraw.DrawMarker(contactPoint, 2.0f, Color.red, 0.0f, false);
+	 
+	Vector3 v = transform.position - contactPoint;
+	 
+	transform.position += Vector3.ClampMagnitude(v, Mathf.Clamp(radius - v.magnitude, 0, radius));
+	 
+	contact = true;
 }
 {% endhighlight %}
 
@@ -131,58 +131,58 @@ using System;
 using System.Collections.Generic;
  
 public class SuperCharacterController : MonoBehaviour {
- 
- [SerializeField]
- float radius = 0.5f;
- 
- private bool contact;
- 
- // Update is called once per frame
- void Update () {
- 
- contact = false;
- 
- foreach (Collider col in Physics.OverlapSphere(transform.position, radius))
- {
- Vector3 contactPoint = Vector3.zero;
- 
- if (col is BoxCollider)
- {
- contactPoint = col.ClosestPointOnBounds(transform.position);
- }
- else if (col is SphereCollider)
- {
- contactPoint = ClosestPointOn((SphereCollider)col, transform.position);
- }
- 
- DebugDraw.DrawMarker(contactPoint, 2.0f, Color.red, 0.0f, false);
- 
- Vector3 v = transform.position - contactPoint;
- 
- transform.position += Vector3.ClampMagnitude(v, Mathf.Clamp(radius - v.magnitude, 0, radius));
- 
- contact = true;
- }
- }
- 
- Vector3 ClosestPointOn(SphereCollider collider, Vector3 to)
- {
- Vector3 p;
- 
- p = to - collider.transform.position;
- p.Normalize();
- 
- p *= collider.radius * collider.transform.localScale.x;
- p += collider.transform.position;
- 
- return p;
- }
- 
- void OnDrawGizmos()
- {
- Gizmos.color = contact ? Color.cyan : Color.yellow;
- Gizmos.DrawWireSphere(transform.position, radius);
- }
+	 
+	[SerializeField]
+	float radius = 0.5f;
+	 
+	private bool contact;
+	 
+	// Update is called once per frame
+	void Update () {
+		 
+		contact = false;
+		 
+		foreach (Collider col in Physics.OverlapSphere(transform.position, radius))
+		{
+			Vector3 contactPoint = Vector3.zero;
+			 
+			if (col is BoxCollider)
+			{
+				contactPoint = col.ClosestPointOnBounds(transform.position);
+			}
+			else if (col is SphereCollider)
+			{
+				contactPoint = ClosestPointOn((SphereCollider)col, transform.position);
+			}
+			 
+			DebugDraw.DrawMarker(contactPoint, 2.0f, Color.red, 0.0f, false);
+			 
+			Vector3 v = transform.position - contactPoint;
+			 
+			transform.position += Vector3.ClampMagnitude(v, Mathf.Clamp(radius - v.magnitude, 0, radius));
+			 
+			contact = true;
+		}
+	}
+	 
+	Vector3 ClosestPointOn(SphereCollider collider, Vector3 to)
+	{
+		Vector3 p;
+		 
+		p = to - collider.transform.position;
+		p.Normalize();
+		 
+		p *= collider.radius * collider.transform.localScale.x;
+		p += collider.transform.position;
+		 
+		return p;
+	}
+	 
+	void OnDrawGizmos()
+	{
+		Gizmos.color = contact ? Color.cyan : Color.yellow;
+		Gizmos.DrawWireSphere(transform.position, radius);
+	}
 }
 {% endhighlight %}
 
@@ -203,93 +203,93 @@ using System.Collections.Generic;
  
 public class SuperCharacterController : MonoBehaviour {
  
- [SerializeField]
- float radius = 0.5f;
- 
- private bool contact;
- 
- // Update is called once per frame
- void Update () {
- 
- contact = false;
- 
- foreach (Collider col in Physics.OverlapSphere(transform.position, radius))
- {
- Vector3 contactPoint = Vector3.zero;
- 
- if (col is BoxCollider)
- {
- contactPoint = ClosestPointOn((BoxCollider)col, transform.position);
- }
- else if (col is SphereCollider)
- {
- contactPoint = ClosestPointOn((SphereCollider)col, transform.position);
- }
- 
- DebugDraw.DrawMarker(contactPoint, 2.0f, Color.red, 0.0f, false);
- 
- Vector3 v = transform.position - contactPoint;
- 
- transform.position += Vector3.ClampMagnitude(v, Mathf.Clamp(radius - v.magnitude, 0, radius));
- 
- contact = true;
- }
- }
- 
- Vector3 ClosestPointOn(BoxCollider collider, Vector3 to)
- {
- if (collider.transform.rotation == Quaternion.identity)
- {
- return collider.ClosestPointOnBounds(to);
- }
- 
- return closestPointOnOBB(collider, to);
- }
- 
- Vector3 ClosestPointOn(SphereCollider collider, Vector3 to)
- {
- Vector3 p;
- 
- p = to - collider.transform.position;
- p.Normalize();
- 
- p *= collider.radius * collider.transform.localScale.x;
- p += collider.transform.position;
- 
- return p;
- }
- 
- Vector3 closestPointOnOBB(BoxCollider collider, Vector3 to)
- {
- // Cache the collider transform
- var ct = collider.transform;
- 
- // Firstly, transform the point into the space of the collider
- var local = ct.InverseTransformPoint(to);
- 
- // Now, shift it to be in the center of the box
- local -= collider.center;
- 
- // Inverse scale it by the colliders scale
- var localNorm =
- new Vector3(
- Mathf.Clamp(local.x, -collider.size.x * 0.5f, collider.size.x * 0.5f),
- Mathf.Clamp(local.y, -collider.size.y * 0.5f, collider.size.y * 0.5f),
- Mathf.Clamp(local.z, -collider.size.z * 0.5f, collider.size.z * 0.5f)
- );
- 
- // Now we undo our transformations
- localNorm += collider.center;
- 
- // Return resulting point
- return ct.TransformPoint(localNorm);
- }
- 
- void OnDrawGizmos()
- {
- Gizmos.color = contact ? Color.cyan : Color.yellow;
- Gizmos.DrawWireSphere(transform.position, radius);
- }
+	[SerializeField]
+	float radius = 0.5f;
+	 
+	private bool contact;
+	 
+	// Update is called once per frame
+	void Update () {
+		 
+		contact = false;
+		 
+		foreach (Collider col in Physics.OverlapSphere(transform.position, radius))
+		{
+			Vector3 contactPoint = Vector3.zero;
+			 
+			if (col is BoxCollider)
+			{
+				contactPoint = ClosestPointOn((BoxCollider)col, transform.position);
+			}
+			else if (col is SphereCollider)
+			{
+				contactPoint = ClosestPointOn((SphereCollider)col, transform.position);
+			}
+			 
+			DebugDraw.DrawMarker(contactPoint, 2.0f, Color.red, 0.0f, false);
+			 
+			Vector3 v = transform.position - contactPoint;
+			 
+			transform.position += Vector3.ClampMagnitude(v, Mathf.Clamp(radius - v.magnitude, 0, radius));
+			 
+			contact = true;
+		}
+	}
+	 
+	Vector3 ClosestPointOn(BoxCollider collider, Vector3 to)
+	{
+		if (collider.transform.rotation == Quaternion.identity)
+		{
+			return collider.ClosestPointOnBounds(to);
+		}
+		 
+		return closestPointOnOBB(collider, to);
+	}
+	 
+	Vector3 ClosestPointOn(SphereCollider collider, Vector3 to)
+	{
+		Vector3 p;
+		 
+		p = to - collider.transform.position;
+		p.Normalize();
+		 
+		p *= collider.radius * collider.transform.localScale.x;
+		p += collider.transform.position;
+		 
+		return p;
+	}
+	 
+	Vector3 closestPointOnOBB(BoxCollider collider, Vector3 to)
+	{
+		// Cache the collider transform
+		var ct = collider.transform;
+		 
+		// Firstly, transform the point into the space of the collider
+		var local = ct.InverseTransformPoint(to);
+		 
+		// Now, shift it to be in the center of the box
+		local -= collider.center;
+		 
+		// Inverse scale it by the colliders scale
+		var localNorm =
+		new Vector3(
+		Mathf.Clamp(local.x, -collider.size.x * 0.5f, collider.size.x * 0.5f),
+		Mathf.Clamp(local.y, -collider.size.y * 0.5f, collider.size.y * 0.5f),
+		Mathf.Clamp(local.z, -collider.size.z * 0.5f, collider.size.z * 0.5f)
+		);
+		 
+		// Now we undo our transformations
+		localNorm += collider.center;
+		 
+		// Return resulting point
+		return ct.TransformPoint(localNorm);
+	}
+	 
+	void OnDrawGizmos()
+	{
+		Gizmos.color = contact ? Color.cyan : Color.yellow;
+		Gizmos.DrawWireSphere(transform.position, radius);
+	}
 }
 {% endhighlight %}
 
