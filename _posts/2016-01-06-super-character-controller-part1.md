@@ -48,5 +48,4 @@ header-img: "img/super-mario-3d-world.jpg"
 
 这里的大多数知识都来源于两个信息源：[Unity论坛](http://forum.unity3d.com/threads/197073-Custom-SweepTest-Collidion-Detection-hELP)上的用户techmage以及逆向分析Unity角色控制器包的用户[fholm](http://forum.unity3d.com/members/59346-fholm)。两个名字都不知道怎么发音。不管怎样，你都可以在[这里](https://github.com/fholm/unityassets)下载，在RPGController目录下。这是一个很不错的项目，代码写得很好。很显然，他时做Unity顾问的，如果有谁需要这个服务的话。最后，如果谁有关于这个话题的很好的资源，不妨与我分享一下。
 
-### [英文原文链接](https://roystanross.wordpress.com/2014/05/07/custom-character-controller-in-unity-part-1-collision-resolution/)
 
