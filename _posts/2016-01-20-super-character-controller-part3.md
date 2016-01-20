@@ -13,7 +13,7 @@ header-img: "img/super-mario-3d-world.jpg"
 
 像之前一样，我尽可能避免造轮子，这里会大量参考fholm的[帖子](http://forum.unity3d.com/threads/142375-The-limitations-of-the-physics-API-and-creating-a-character-controller)。
 
-![]({{ site.url }}img/character-controller/fholm.jpg)
+![]({{ site.url }}/img/character-controller/fholm.jpg)
 
 ### 物理API
 
@@ -49,13 +49,13 @@ header-img: "img/super-mario-3d-world.jpg"
 
 凸多边形所有面片必须是封闭的，而且Unity限制了多边形数量上限为255，用它来表示错综复杂的关卡地形是不理想的。凹多边形可以是任意形状，但是缺点是不保证封闭。也就是说比起固体来讲，它们更多的是一块面片。这意味着我们再也不会检测出来某个对象在凸多边形面片内部。这也带来了一个相位问题。相位会在角色移动速度很快的时候发生。就是两帧之间直接就穿过去了，没有发生任何碰撞。而凸多边形使得问题更容易发生了。
 
-![]({{ site.url }}img/character-controller/screen11.jpg)
+![]({{ site.url }}/img/character-controller/screen11.jpg)
 
 * 角色控制器一帧的运动，他的速度大的足以让他一帧就直接穿过了墙体
 
 假设我们就紧贴着网格碰撞体，而且法线正对着我们的方向，我们能够移动的最大距离是半径的两倍。想象一下我们碰撞处理的做法是将对象紧贴着墙面，因此这种情况很容易发生。如果你的角色大概2米高，半径为0.5米。那么角色的最大移动速度为每帧1米。如果游戏运行在30帧，那么每秒30米，每小时108千米。看上去很快，但是对于索尼克这类游戏来说还不够。
 
-![]({{ site.url }}img/character-controller/screen21.jpg)
+![]({{ site.url }}/img/character-controller/screen21.jpg)
 
 * 因为角色紧贴着表面，不能速度快过半径两倍，否则会发生相位。
 
