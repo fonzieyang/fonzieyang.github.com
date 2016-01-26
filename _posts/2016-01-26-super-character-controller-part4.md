@@ -9,13 +9,13 @@ header-img: "img/super-mario-3d-world.jpg"
 
 ---
 
-在经历了一个月的沉默之后，这次等待终于结束！再也不用忍受每天一早醒来怀着期待立刻打开我闪瞎狗眼的博客，而后得到的却是灵魂坠落深渊的失落...在接着上次之后，我开发了角色控制器的第一个版本，而且我会这这里讲讲它的实现。这篇文章会专门讲控制器，在下一篇里，我看看如何应用控制器到我建好的Demo角色上。控制器本身是一个C#脚本，可以在这里[下载]({{ site.url }}download/SuperCharacterControllerGold.cs)。像之前的往后推的例子所讲的(系列文章[Part 2]({{ site.url }}super-character-controller-part2))，我用到了一些来自[fholm的RPG项目中的类](https://github.com/fholm/unityassets)，同时改了他用来寻找最近点的类，叫做[SuperCollision.cs]({{ site.url }}download/SuperCollisions.cs)。另外，为了方便调试，我特意写了一个类[DebugDraw.cs]({{ site.url }}download/DebugDraw.cs)用来绘制标记以及向量。最后，用到了Bit Barrel Media编写的[Math3D.cs]({{ site.url }}download/Math3D.cs)中的大量数学函数。引用了这些类之后，以后发布Unity工程可能会轻松点，但今天我们只关注单个类，这是最简单的。我将会跳过控制器的最基础的结构体，而是进一步会深入更多的细节。
+在经历了一个月的沉默之后，这次等待终于结束！再也不用忍受每天一早醒来怀着期待立刻打开我闪瞎狗眼的博客，而后得到的却是灵魂坠落深渊的失落...在接着上次之后，我开发了角色控制器的第一个版本，而且我会这这里讲讲它的实现。这篇文章会专门讲控制器，在下一篇里，我看看如何应用控制器到我建好的Demo角色上。控制器本身是一个C#脚本，可以在这里[下载]({{ site.url }}/download/SuperCharacterControllerGold.cs)。像之前的往后推的例子所讲的(系列文章[Part 2]({{ site.url }}/super-character-controller-part2))，我用到了一些来自[fholm的RPG项目中的类](https://github.com/fholm/unityassets)，同时改了他用来寻找最近点的类，叫做[SuperCollision.cs]({{ site.url }}/download/SuperCollisions.cs)。另外，为了方便调试，我特意写了一个类[DebugDraw.cs]({{ site.url }}/download/DebugDraw.cs)用来绘制标记以及向量。最后，用到了Bit Barrel Media编写的[Math3D.cs]({{ site.url }}/download/Math3D.cs)中的大量数学函数。引用了这些类之后，以后发布Unity工程可能会轻松点，但今天我们只关注单个类，这是最简单的。我将会跳过控制器的最基础的结构体，而是进一步会深入更多的细节。
 
-「PS: 在读者的要求之下，现在可以从[下载页]({{ site.url }}super-character-controller-part0)直接下载。要注意的是，上面链接中的代码是早期版本的角色控制器代码，放在这里是为了阐述与教学目的。如果你打算将其用到自己的项目中，请前往[下载页]({{ site.url }}super-character-controller-part0)下载最新版本的代码以及例子工程。」
+「PS: 在读者的要求之下，现在可以从[下载页]({{ site.url }}/super-character-controller-part0)直接下载。要注意的是，上面链接中的代码是早期版本的角色控制器代码，放在这里是为了阐述与教学目的。如果你打算将其用到自己的项目中，请前往[下载页]({{ site.url }}/super-character-controller-part0)下载最新版本的代码以及例子工程。」
 
 控制器会经历三个阶段: 移动(Movement)、反推(Pushback)、处理(Resolution)。在移动阶段，我们计算所有我们角色的移动逻辑，然后相应地改变他得位置。紧接着会运行PushBack函数，来确保他没有与任何几何体发生交叉。最后，我们会做必要的处理步骤。这里包括了斜坡的处理等等的情况。
 
-![]({{ site.url }}img/character-controller/pic1.jpg)
+![]({{ site.url }}/img/character-controller/pic1.jpg)
 
 * 图中展示了控制器的移动以及反推
 
@@ -27,21 +27,21 @@ transform.position += debugMove * Time.deltaTime;
 
 {% endhighlight %}
 
-这使得你可以通过inspector设置角色控制器每帧运动多远。当我们构造真正的角色的时候，这一行会被实际的移动逻辑替代。现在只是作为调试工具使用。第二阶段就是反推。这里的目标就是确定是否与其他碰撞体发生交叉，如果发生了，就将其推到最近的表面。基本的实现可以看之前的[文章]({{ site.url }}super-character-controller-part2)。而这一次，算法变得稍微复杂了一点点。前半段与之前大致相同，我们使用OverlapSphere找到某个发生碰撞的最近表面的点。接着，要看看OverlapSphere得到的法线在哪一边。我们通过从球体原点到碰撞体表面打射线来判断。由于光线投射只能检测法线朝着投射方向的表面。因此这次投射会返回true或者false，这样就知道我们的原点是在内部还是外部。值得注意的是，代码中使用的是用了很小半径的SphereCast来替代光线投射。这样就避免了光线直接打在网格线段上的情况。
+这使得你可以通过inspector设置角色控制器每帧运动多远。当我们构造真正的角色的时候，这一行会被实际的移动逻辑替代。现在只是作为调试工具使用。第二阶段就是反推。这里的目标就是确定是否与其他碰撞体发生交叉，如果发生了，就将其推到最近的表面。基本的实现可以看之前的[文章]({{ site.url }}/super-character-controller-part2)。而这一次，算法变得稍微复杂了一点点。前半段与之前大致相同，我们使用OverlapSphere找到某个发生碰撞的最近表面的点。接着，要看看OverlapSphere得到的法线在哪一边。我们通过从球体原点到碰撞体表面打射线来判断。由于光线投射只能检测法线朝着投射方向的表面。因此这次投射会返回true或者false，这样就知道我们的原点是在内部还是外部。值得注意的是，代码中使用的是用了很小半径的SphereCast来替代光线投射。这样就避免了光线直接打在网格线段上的情况。
 
-![]({{ site.url }}img/character-controller/pic2.jpg)
+![]({{ site.url }}/img/character-controller/pic2.jpg)
 
 * 角色的"脚"与斜坡发生OverlapSphere，找到了最近点，然后朝最近点打射向(红色箭头)
 
 在应用回退向量将角色推回去之前，我们还是需要做最后检查来确保我们是否与某个对象发生了碰撞。因为OverlapSphere会返回所有碰撞体，然后一个个地反推。这会使得在与多个碰撞体发生碰撞的情况下，上一个碰撞得到的反推会使得与这一个碰撞体不再交叉。我们解决这个问题的方法是检查我们球体的原点与碰撞体最近点的距离。如果距离大于半径，我们就直接沿着法线往外推，我们就认为这种情况下，我们上一个反推使得不再与这个碰撞体交叉。
 
-![]({{ site.url }}img/character-controller/pic3.jpg)
+![]({{ site.url }}/img/character-controller/pic3.jpg)
 
 * 最下方的球体的OverlapSphere与绿色的斜坡以及蓝色的地面发生交叉，而分别的最近点为靛和蓝。斜坡的反推先起作用，使得球体不再与地面发生碰撞。
 
 第三阶段就不像前两个阶段那样清晰。可以认为就是清理或者反应逻辑。这里需要执行两个主要的逻辑是：坡度限制以及钳住地面。每个对Unity内建的Character Controller熟悉的同学应该都了解坡度限制：如果角色尝试向指定坡度更大的地方走去，他就会被像一堵墙一样挡住。钳住地面则是Unity角色控制器所不具备的能力，而且相当重要。当水平走过不平的路面时，控制器将不会紧贴着地面。在真实世界当中，我们通过双腿每次的轻微上下来保持平衡。但是在游戏世界中，我们需要特殊处理。与真实世界不同的是，重力不是总是作用在控制器身上。当我们没有站在平面上时，会添加向下的重力加速度。当我们在平面上时，我们设置垂直速度为0，表示平面的作用力。由于我们站在平面上的垂直速度为0，当我们走出平面时，需要时间来产生向下的速度。对于走出悬崖来说，这么做没问题，但是当我们在斜坡或者不平滑的路面行走时，会产生不真实的反弹效果。为了避免有视觉问题，在地面与非地面之间的振幅会构成逻辑问题，特别是在地面上与掉落时的差别。
 
-![]({{ site.url }}img/character-controller/pic4.jpg)
+![]({{ site.url }}/img/character-controller/pic4.jpg)
 
 * 左边的图显示了角色在不平滑的路面移动时，钳住地面的效果。而右边则是没有钳住地面，从而导致角色很跳。每个红色的大叉都代表了向下的重力归零。
 

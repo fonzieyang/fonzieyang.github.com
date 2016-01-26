@@ -111,7 +111,7 @@ foreach (Collider col in Physics.OverlapSphere(transform.position, radius))
 
 运行代码，你会注意到当碰撞发生的时候，会在位置上绘制一个红色十字标记。现在，拖动player到墙体内，就能看到标记跟随者player。这对于ClosestPointOnBounds函数来说也不完全是个错误，但是如果要对应上上回提到的退回策略，我们真的希望有一个ClosestPointOnSurfaceOfBoundsOrSomething函数。
 
-![]({{ site.url }}img/character-controller/screen7.jpg)
+![]({{ site.url }}/img/character-controller/screen7.jpg)
 
 问题就在于当我们的角色在碰撞体内部的时候，随着返回最近点函数失效，没法正确地处理碰撞。现在，我们就来处理这个问题。
 
