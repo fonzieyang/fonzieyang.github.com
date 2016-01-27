@@ -11,9 +11,9 @@ header-img: "img/super-mario-3d-world.jpg"
 
 现在有两种下载控制器的途径：要么得到包含工程的.zip文件，要么是.unitypackage文件。例子工程中包含了一个例子场景，应用到了我们的角色控制器。
 
-![]({{ site.url }}img/character-controller/controllerexample.jpg)
+![]({{ site.url }}/img/character-controller/controllerexample.jpg)
 
-[下载角色控制器]({{ site.url }}super-character-controller-part0)
+[下载角色控制器]({{ site.url }}/super-character-controller-part0)
 
 不管是打开工程文件还是导入unitypackage，都会有一个目录下存放着核心代码，叫做SuperCharacterController®。目录下有一个RPGController文件夹包含了[fholm](http://forum.unity3d.com/members/fholm.59346/)编写的用于创建网格树的类，一个README文件，一个Math3d类(by [BitBarrelMedia](http://bitbarrelmedia.wordpress.com/))，DebugDraw类(by [Roystan Ross](https://roystanross.wordpress.com/))以及一个Core目录存放着角色控制器相关的所有代码。
 
