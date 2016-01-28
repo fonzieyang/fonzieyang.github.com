@@ -13,7 +13,7 @@ header-img: "img/super-mario-3d-world.jpg"
 
 ![]({{ site.url }}/img/character-controller/mario_glitch.gif)
 
-* 一个差的地形检测的例子。
+* 一个地形检测反例
 
 因此我们想知道什么在角色脚底下呢？首先是距离脚下有多远。我们会想知道角色的脚是否贴着地面还是在半空中。我们还会想知道脚下地面具体位置坐标，这对于[上一章]({{ site.url }}/super-character-conroller-part5)强调过的钳住地面是很重要的。第三个就是会想知道脚下地形的法线是多少。而最后很有必要知道脚下的**GameObject**是谁，这使得我们可以为地形添加组件(在超级角色控制器当中，会有**SuperCollisionType**可以添加到地形当中来描述地形)。
 
