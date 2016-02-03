@@ -9,14 +9,14 @@ header-img: "img/super-mario-3d-world.jpg"
 
 ---
 
-以下是[Roystan Ross](https://roystanross.wordpress.com/)为其超级马里奥项目所开发的超级角色控制器。国内也曾经有媒体报到过，最后Ross的马里奥项目由于任天堂发出版权警告，最后不得不停止发布。而马里奥项目背后的角色控制器没有受到影响。
+以下是[Roystan Ross](https://roystanross.wordpress.com/)为其超级马里奥项目所开发的超级角色控制器。国内也曾经有媒体报到过，最后Ross的马里奥项目由于任天堂的版权警告，最后不得不停止发布。这就是项目背后的角色控制器。
 
 
 <embed src="http://player.youku.com/player.php/sid/XMTQ0MjcxMjQwMA==/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash">
 
 
 
-以下是翻译文章列表，可以了解以下是如何设计：
+以下是翻译文章列表，可以了解如何设计及实现：
 
 * [Unity超级角色控制器 Part 1--碰撞处理]({{ site.url }}super-character-controller-part1)
 * [Unity超级角色控制器 Part 2--具体实现]({{ site.url }}super-character-controller-part2)
