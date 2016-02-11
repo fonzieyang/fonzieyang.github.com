@@ -26,7 +26,7 @@ header-img: "img/super-mario-3d-world.jpg"
 * [Unity超级角色控制器 Part 6--地形检测]({{ site.url }}super-character-controller-part6)
 
 
-项目Github地址为:[https://github.com/IronWarrior/SuperCharacterController](https://github.com/IronWarrior/SuperCharacterController)
+项目Github地址在[这里](https://github.com/IronWarrior/SuperCharacterController)。
 
 
 
