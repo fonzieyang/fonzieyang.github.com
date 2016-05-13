@@ -3,8 +3,8 @@
 layout:     post
 title:      "游戏设计相关资料"
 subtitle:   "游戏是自愿克服的非必要障碍"
-categories: 游戏
-tags: [游戏, tag]
+categories: 游戏设计
+tags: [游戏设计, tag]
 header-img: "img/paper-game-design.jpg"
 
 ---
