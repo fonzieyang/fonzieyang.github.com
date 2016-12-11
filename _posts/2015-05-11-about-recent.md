@@ -4,7 +4,7 @@ layout:     post
 title:      "关于博客最近更新"
 subtitle:   ""
 categories: 公告
-tags: [公告, GamePlay, tag]
+tags: [公告, tag]
 header-img: "img/bigfish.jpg"
 
 ---
