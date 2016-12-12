@@ -10,7 +10,7 @@ header-img: "img/lena_title.jpg"
 ---
 
 
-最近鹅厂技术专家miloyip大牛发布了[游戏程序员学习指南](https://miloyip.github.io/game-programmer/game-programmer.pdf)(我的译著[《游戏编程算法与技巧》](https://book.douban.com/subject/26906838/)原版也在其中:>)，除了For Kid系列很多都看过，确实都是好书，深有同感，看着封面就有亲切感。
+最近鹅厂技术专家miloyip大牛发布了[游戏程序员学习指南](https://miloyip.github.io/game-programmer/game-programmer.pdf)(我的译著[《游戏编程算法与技巧》](https://book.douban.com/subject/26906838/)原版也在其中:>)，除了For Kid系列很多都看过，确实都是好书，深有同感，看着封面就有亲切感。
 
 但我觉得这条道路对于国内还没进入状态的小白来讲，门槛太高，光是英语就卡掉一批人。特别是前些天的[游戏蛮牛在线答疑](http://www.manew.com/thread-97988-1-1.html)里，发现很多人都不知道如何进一步学习。
 
