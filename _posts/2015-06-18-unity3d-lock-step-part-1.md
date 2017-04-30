@@ -55,13 +55,16 @@ Unity3d的主循环每次遍历更新都会调用Update()。主循环会以最�
 private float AccumilatedTime = 0f;
  
 private float FrameLength = 0.05f; //50 miliseconds
- 
+
 //called once per unity frame
+
 public void Update() {
     //Basically same logic as FixedUpdate, but we can scale it by adjusting FrameLength
+
     AccumilatedTime = AccumilatedTime + Time.deltaTime;
  
     //in case the FPS is too slow, we may need to update the game multiple times a frame
+
     while(AccumilatedTime > FrameLength) {
         GameFrameTurn ();
         AccumilatedTime = AccumilatedTime - FrameLength;
@@ -74,6 +77,7 @@ public void Update() {
 {% highlight C++ %}
 private void GameFrameTurn() {
     //first frame is used to process actions
+
     if(GameFrame == 0) {
         if(LockStepTurn()) {
             GameFrame++;
@@ -96,12 +100,14 @@ private void GameFrameTurn() {
 {% highlight C++ %}
 private void GameFrameTurn() {
     //first frame is used to process actions
+
     if(GameFrame == 0) {
         if(LockStepTurn()) {
             GameFrame++;
         }
     } else {
         //update game
+
         SceneManager.Manager.TwoDPhysics.Update (GameFramesPerSecond);
          
         List<IHasGameFrame> finished = new List<IHasGameFrame>();
@@ -141,10 +147,13 @@ IHasGameFrame接口也有属性标记着结束。这使得实现IHasGameFrame的
 private bool NextTurn() {       
     if(confirmedActions.ReadyForNextTurn() && pendingActions.ReadyForNextTurn()) {
         //increment the turn ID
+
         LockStepTurnID++;
         //move the confirmed actions to next turn
+
         confirmedActions.NextTurn();
         //move the pending actions to this turn
+        
         pendingActions.NextTurn();
          
         return true;

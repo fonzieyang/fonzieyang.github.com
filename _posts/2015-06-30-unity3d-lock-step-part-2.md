@@ -36,9 +36,11 @@ $$newAverage = currentAverage * (1 – w) + newValue * ( w)$$
 public void Add(int newValue, int playerID) {
     if(newValue > playerAverages[playerID]) {
         //rise quickly
+
         playerAverages[playerID] = newValue;
     } else {
         //slowly fall down
+
         playerAverages[playerID] = (playerAverages[playerID] * (9) + newValue * (1)) / 10;
     }
 }
@@ -60,11 +62,13 @@ $$newAverage = (currentAverage * (10 – w) + newValue * ( w)) / 10$$
 {% highlight C++ %}
 private void ProcessActions() {
     //process action should be considered in runtime performance
+
     gameTurnSW.Start ();
  
     ...
  
     //finished processing actions for this turn, stop the stopwatch
+
     gameTurnSW.Stop ();
 }
  
@@ -72,9 +76,11 @@ private void GameFrameTurn() {
    ...
          
     //start the stop watch to determine game frame runtime performance
+
     gameTurnSW.Start();
  
     //update game
+
     ...
  
     GameFrame++;
@@ -83,14 +89,17 @@ private void GameFrameTurn() {
     }
  
     //stop the stop watch, the gameframe turn is over
+
     gameTurnSW.Stop ();
     //update only if it's larger - we will use the game frame that took the longest in this lockstep turn
+
     long runtime = Convert.ToInt32 ((Time.deltaTime * 1000))/*deltaTime is in secounds, convert to milliseconds*/ + gameTurnSW.ElapsedMilliseconds;
     if(runtime > currentGameFrameRuntime) {
         currentGameFrameRuntime = runtime;
     }
  
     //clear for the next frame
+
     gameTurnSW.Reset();
 }
 {% endhighlight %}
@@ -110,10 +119,12 @@ public class ConfirmedActions
         Stopwatch swapSW = priorSW;
              
         //last turns actions is now this turns prior actions
+
         ...
         priorSW = currentSW;
          
         //set this turns confirmation actions to the empty array
+
         ...
         currentSW = swapSW;
         currentSW.Reset ();
@@ -127,24 +138,31 @@ public class ConfirmedActions
 public void ConfirmAction(int confirmingPlayerID, int currentLockStepTurn, int confirmedActionLockStepTurn) {
     if(confirmedActionLockStepTurn == currentLockStepTurn) {
         //if current turn, add to the current Turn Confirmation
+
         confirmedCurrent[confirmingPlayerID] = true;
         confirmedCurrentCount++;
         //if we recieved the last confirmation, stop timer
+
         //this gives us the length of the longest roundtrip message
+
         if(confirmedCurrentCount == lsm.numberOfPlayers) {
             currentSW.Stop ();
         }
     } else if(confirmedActionLockStepTurn == currentLockStepTurn -1) {
         //if confirmation for prior turn, add to the prior turn confirmation
+
         confirmedPrior[confirmingPlayerID] = true;
         confirmedPriorCount++;
         //if we recieved the last confirmation, stop timer
+
         //this gives us the length of the longest roundtrip message
+
         if(confirmedPriorCount == lsm.numberOfPlayers) {
             priorSW.Stop ();
         }
     } else {
         //TODO: Error Handling
+
         log.Debug ("WARNING!!!! Unexpected lockstepID Confirmed : " + confirmedActionLockStepTurn + " from player: " + confirmingPlayerID);
     }
 }
@@ -170,18 +188,23 @@ public abstract class Action
 {% highlight C++ %}
 private void UpdateGameFrameRate() {
     //log.Debug ("Runtime Average is " + runtimeAverage.GetMax ());
+
     //log.Debug ("Network Average is " + networkAverage.GetMax ());
+
     LockstepTurnLength = (networkAverage.GetMax () * 2/*two round trips*/) + 1/*minimum of 1 ms*/;
     GameFrameTurnLength = runtimeAverage.GetMax ();
  
     //lockstep turn has to be at least as long as one game frame
+
     if(GameFrameTurnLength > LockstepTurnLength) {
         LockstepTurnLength = GameFrameTurnLength;
     }
  
     GameFramesPerLockstepTurn = LockstepTurnLength / GameFrameTurnLength;
     //if gameframe turn length does not evenly divide the lockstep turn, there is extra time left after the last
+
     //game frame. Add one to the game frame turn length so it will consume it and recalculate the Lockstep turn length
+    
     if(LockstepTurnLength % GameFrameTurnLength > 0) {
         GameFrameTurnLength++;
         LockstepTurnLength = GameFramesPerLockstepTurn * GameFrameTurnLength;

@@ -217,7 +217,7 @@ PS: 在最后追加了一个数学
 
 ![]({{ site.url }}/img/yixunbo.png)
 
-
+* 机器学习
 
 
 
