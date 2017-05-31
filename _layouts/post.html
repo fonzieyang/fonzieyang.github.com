@@ -83,9 +83,20 @@ layout: default
 
 
                 <!-- 多说评论框 start -->
-                <div class="ds-thread" data-thread-key={{ page.title }} data-title={{ page.title }} data-url={{ site.baseurl | page.url}}></div>
+                <!--<div class="ds-thread" data-thread-key={{ page.title }} data-title={{ page.title }} data-url={{ site.baseurl | page.url}}></div>-->
                 <!-- 多说评论框 end -->
-              
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+<script>
+var cloudTieConfig = {
+  url: document.location.href, 
+  sourceId: "",
+  productKey: "fb290fbaa24b46e4a9313d73429623e4",
+  target: "cloud-tie-wrapper"
+};
+var yunManualLoad = true;
+Tie.loader("aHR0cHM6Ly9hcGkuZ2VudGllLjE2My5jb20vcGMvbGl2ZXNjcmlwdC5odG1s", true);
+</script>              
 
 
 
