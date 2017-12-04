@@ -38,6 +38,8 @@ IK如果想要做的自然还有很多corner case，比如身随手动、bad zon
 
 ## Retarget
 
+![]({{ site.url }}/img/retarget.jpeg)
+
 Retarget就是一段动画可以服用到别的模型上。
 
 Unity可以基于节点名字进行retarget。随手做一段clip都支持这个功能。
@@ -47,6 +49,9 @@ Unity可以基于节点名字进行retarget。随手做一段clip都支持这个
 如果想在别的形体也进行retarget，那么可以使用Morpheme中间件。
 
 ## 换装系统
+
+![]({{ site.url }}/img/avatar.png)
+
 这里讲几套换装方案
 
 1. 最简单的是材质层面的换装，比如换贴图
@@ -60,6 +65,9 @@ Unity可以基于节点名字进行retarget。随手做一段clip都支持这个
 5. 支持捏脸，参考uma系统。原理就是先把做好的部位顶点拼接起来，并且蒙皮。捏脸也是对顶点骨骼进行操作。
 
 ## RootMotion
+
+![]({{ site.url }}/img/rootmotion.jpeg)
+
 用RootMotion能让动画更加自然（一些游戏滑步就是因为不会用RootMotion），也有很多项目会单独把RootMotion单独输出美术路径拆开使用。但是RootMotion是静态的，对于动态的环境需要一些技巧来让RootMotion更加自然。
 
 对于动态位移的情况，我们经常会遇到RootMotion够不到目的地的情况，那么对RootMotion最常用的操作就是将其缩放到合适的位移。
@@ -75,6 +83,9 @@ Unity可以基于节点名字进行retarget。随手做一段clip都支持这个
 好处就是提高单个AnimatorController复用率，减少动画状态以及初始化涉及的clip数量。
 
 ## 物理动画
+
+![]({{ site.url }}/img/gang-beasts.jpg)
+
 Unity的动画系统很简单，不支持复杂的状态机，没法在里面加入IK、物理之类的节点，也无法嵌套混合树。这里可以最终动画系统输出之后，比如LateUpdate的方式，再进行一遍处理来调节骨骼。
 
 dynamicbone，这个插件可以对指定的骨骼加入效果，从而让某个骨骼有震荡的效果。
