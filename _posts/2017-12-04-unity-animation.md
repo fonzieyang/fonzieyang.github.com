@@ -13,11 +13,19 @@ header-img: "img/unity-girl3.jpg"
 
 ## 状态机与状态机设计
 ![]({{ site.url }}/img/anim-state-machine.jpg)
+
 角色的状态机以0层作为主层，然后以待机作混合树为中心进行切换。
+
 ![]({{ site.url }}/img/anim-state-machine2.jpg)
+
 主层中会有一些复杂一些的混合树，通过参数调节做出动作融合，比如八方向Straft。
-![]({{ site.url }}/img/anim-state-machine3.jpg) 主层还有会一个节点专门用于Override，后续会提到。
+
+![]({{ site.url }}/img/anim-state-machine3.jpg)
+
+主层还有会一个节点专门用于Override，后续会提到。
+
 ![]({{ site.url }}/img/anim-state-machine4.jpg)
+
 在副层，用于非常规行为的动作融合，比如边走边打、边走边防御。
 ￼
 
