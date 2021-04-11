@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
+body {
+  font-family: 'Poppins', serif;
+  background-image: url("img/parallax.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  color: white;
+}
+
+#desc {
+  color: black;
+  font-size: 14px;
+}
+
+
+footer {
+  background-color: #3f3f3f;
+  color: #d5d5d5;
+  padding-top: 1rem;
+  font-size: 16px;
+}
+
+nav {
+  background-image: url("img/navbar.png");
+  background-size: cover;
+}
+
+#navtext {
+  color: white;
+}
+.navbar {
+  padding: .8rem;
+}
+
+.navbar-nav li {
+  padding-right: 20px;
+}
+
+.nav-link {
+  font-size: 1.1em !important;
+}
+hr.light {
+  border-top: 1px solid #d5d5d5;
+  width: 75%;
+}
+
+hr.light-100 {
+  border-top: 1px solid #d5d5d5;
+  width: 100%;
+}
+
+
+#mike {
+  color: white;
+  text-align: justify;
+  padding-left: 0px;
+  font-size: 22px;
+  font-style: Poppins;
+}
+
+#navtext {
+  color: white;
+}
+
+h4 {
+  text-align: center;
+  color: #F4006A;
+  font-size: 30px;
+}
+
+#cardimg{
+  height:150px;
+  width: 180px;
+
+}
+
+h3{
+  color: #F4006A;
+}
+.flex-container {
+  display: flex;
+  height: 200px;
+  align-items: centre;
+  margin-left: -40px;
+  margin-right: -40px;
+  padding-left: 50px;
+  background-color: black;
+  padding-bottom: 70px;
+  width: 109%;
+  height: 0%;
+  margin-bottom: 50px;
+  color: white;
+}

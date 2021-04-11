@@ -1,24 +1,58 @@
-#Clean Blog by Start Bootstrap - Jekyll Version
+# GAME ADVERTISEMENT PAGE
 
-The official Jekyll version of the Clean Blog theme by [Start Bootstrap](http://startbootstrap.com/).
+#### 27/07/2018
+#### By **GameCity Team**
 
-###[View Live Demo &rarr;](http://ironsummitmedia.github.io/startbootstrap-clean-blog-jekyll/)
+## Description
 
-## Before You Begin
+This is a website that advertises mobile games. It allows game developers to be in touch with the team and get the best plans so their games can be advertised and get exposure.
+## Getting Started
 
-In the _config.yml file, the base URL is set to /startbootstrap-clean-blog-jekyll which is this themes gh-pages preview. It's recommended that you remove the base URL before working with this theme locally!
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-It should look like this:
-`baseurl: ""`
+### Prerequisites
 
-## What's Included
+You will need to: Have a web browser (Google chrome is highly prefrable).
 
-A full Jekyll environment is included with this theme. If you have Jekyll installed, simply run `jekyll serve` in your command line and preview the build in your browser. You can use `jekyll serve --watch` to watch for changes in the source files as well.
 
-A Grunt environment is also included. There are a number of tasks it performs like minification of the JavaScript, compiling of the LESS files, adding banners to keep the Apache 2.0 license intact, and watching for changes. Run the grunt default task by entering `grunt` into your command line which will build the files. You can use `grunt watch` if you are working on the JavaScript or the LESS.
+### Installing
 
-You can run `jekyll serve --watch` and `grunt watch` at the same time to watch for changes and then build them all at once.
+ * Go to Github.com
 
-## Support
+ * Search for Cherucole then navigate to the project Game Landing Page.
 
-Visit Clean Blog's template overview page on Start Bootstrap at http://startbootstrap.com/template-overviews/clean-blog/ and leave a comment, email feedback@startbootstrap.com, or open an issue here on GitHub for support.
+ * Then clone the project or fork it.
+
+## Deployment
+
+I have put up a live stream just by the coding section and one can view this project by clicking on that stream
+## Built With
+
+* HTML
+* CSS
+* JS
+
+## Authors
+
+Game City Team Members:
+* Cherucole
+* Tom Chege
+* Michael Karanja
+* Tonny Muchui
+* Tony Kioko
+
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2018 Cherucole
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+## Acknowledgments
+
+* Moringa School
