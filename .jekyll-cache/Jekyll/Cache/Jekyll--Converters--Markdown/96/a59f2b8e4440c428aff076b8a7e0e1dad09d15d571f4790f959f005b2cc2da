@@ -1,0 +1,100 @@
+I"�<p>这里总结一下，自己使用Unity以来的心得，大部分属于随手解决但还有印象或者觉得效果不错。</p>
+
+<p>这个小工具能够在项目早期快速地引入配置系统，并且修改起来也非常迅速，能够实时预览修改结果。该系统支持默认参数、支持整形、浮点、字符串、数组、结构体。并且由于Xml序列化的可靠性从而十分健壮，容易调试。还很容易进行压缩加密等等操作，但这里不讲这些。</p>
+
+<p>为什么不用json等其他格式？我个人认为xml可读性更好(个人偏好)。里面微小的性能差异很难构成瓶颈。</p>
+
+<h2 id="序列化工具xmlserializer">序列化工具XmlSerializer</h2>
+
+<p>Xml是每门语言都会有解析库可以直接拿来用，这里演示一下C#的情况。
+这个工具在项目早期，能够非常快速地构建起一套配置系统，比如技能模板文件。</p>
+
+<p>首先写个xml文件</p>
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml">	
+<span class="nt">&lt;SkillTemplate&gt;</span>
+  <span class="nt">&lt;StageList&gt;</span>
+    <span class="nt">&lt;Stage</span> <span class="na">Interruptible=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;Foo&gt;</span>1<span class="nt">&lt;/Foo&gt;</span>
+    <span class="nt">&lt;/Stage&gt;</span>    
+    <span class="nt">&lt;Stage&gt;</span>
+      <span class="nt">&lt;Foo&gt;</span>2<span class="nt">&lt;/Foo&gt;</span>
+    <span class="nt">&lt;/Stage&gt;</span>	    
+  <span class="nt">&lt;/StageList&gt;</span>
+<span class="nt">&lt;/SkillTemplate&gt;</span></code></pre></figure>
+
+<p>然后定义一个结构体</p>
+
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="p">[</span><span class="nf">XmlRoot</span><span class="p">(</span><span class="s">"SkillTemplate"</span><span class="p">)]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">SkillTemplate</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="nf">XmlArray</span><span class="p">(</span><span class="s">"StageList"</span><span class="p">),</span><span class="nf">XmlArrayItem</span><span class="p">(</span><span class="s">"Stage"</span><span class="p">)]</span>
+    <span class="k">public</span> <span class="n">SkillTemplateStage</span><span class="p">[]</span> <span class="n">StageList</span><span class="p">;</span>
+<span class="p">}</span>
+	
+<span class="p">[</span><span class="nf">XmlRoot</span><span class="p">(</span><span class="s">"Stage"</span><span class="p">)]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">SkillTemplateStage</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="n">System</span><span class="p">.</span><span class="n">ComponentModel</span><span class="p">.</span><span class="nf">DefaultValue</span><span class="p">(</span><span class="m">0</span><span class="p">)]</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">Foo</span><span class="p">;</span>
+    
+    <span class="p">[</span><span class="n">System</span><span class="p">.</span><span class="n">ComponentModel</span><span class="p">.</span><span class="nf">DefaultValue</span><span class="p">(</span><span class="k">false</span><span class="p">)]</span>
+    <span class="p">[</span><span class="nf">XmlAttribute</span><span class="p">(</span><span class="s">"Interruptible"</span><span class="p">)]</span>
+    <span class="k">public</span> <span class="kt">bool</span> <span class="n">Interruptible</span><span class="p">;</span>	    
+<span class="p">}</span>	</code></pre></figure>
+
+<p>读取非常简单，比如加载一个技能模板</p>
+
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="kt">var</span> <span class="n">serializer</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">XmlSerializer</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">SkillTemplate</span><span class="p">));</span>
+<span class="kt">var</span> <span class="n">stream</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">FileStream</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">FileMode</span><span class="p">.</span><span class="n">Open</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">container</span> <span class="p">=</span> <span class="n">serializer</span><span class="p">.</span><span class="nf">Deserialize</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span> <span class="k">as</span> <span class="n">SkillTemplate</span><span class="p">;</span>
+<span class="n">stream</span><span class="p">.</span><span class="nf">Close</span><span class="p">();</span>   
+<span class="k">return</span> <span class="n">container</span><span class="p">;</span></code></pre></figure>
+
+<p>保存也是</p>
+
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#">        
+<span class="kt">var</span> <span class="n">serializer</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">XmlSerializer</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">SkillTemplate</span><span class="p">));</span>
+<span class="kt">var</span> <span class="n">stream</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">FileStream</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">FileMode</span><span class="p">.</span><span class="n">Create</span><span class="p">);</span>
+<span class="n">serializer</span><span class="p">.</span><span class="nf">Serialize</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">st</span><span class="p">);</span>
+<span class="n">stream</span><span class="p">.</span><span class="nf">Close</span><span class="p">();</span>        </code></pre></figure>
+
+<p>Debug版本可以放弃缓存，那么每次都重新加载能够实时预览修改。</p>
+
+<p>基于此再结合Timeline工具做个技能编辑器就很简单了。</p>
+
+<p>有同学说XmlSerializer会有性能问题，但我的Profile里面所有技能文件都热加载也没出现卡顿。假如在更大的规模下发现了，那么也很容易进行替换成另一套序列化系统。</p>
+
+<h2 id="将excel转为xml">将Excel转为Xml</h2>
+
+<p>后续可以将Excel也纳入Xml中统一处理，在Unity商店中有很多免费的Excel处理工具，也可以用Python撸一个。</p>
+
+<p>这样，Excel同样也支持Xml所支持的功能，比如整形、浮点、字符串、数组、结构体等等。</p>
+
+<p><img src="/img/xml-excel.jpg" alt="" /></p>
+
+<p>字段汉化、路径复用等等也支持，都可以通过Excel自身公式轻松解决。</p>
+
+<h2 id="和别的方案对比">和别的方案对比</h2>
+
+<p>配置工具把工序拆开，可以大致分为：</p>
+
+<ul>
+  <li>输入：元数据、可读的数据</li>
+  <li>输出：生成代码、生产数据</li>
+</ul>
+
+<p>在过去工作流是这样的：</p>
+
+<blockquote>
+  <p>需要改字段-&gt;改Excel-&gt;改元数据-&gt;后台统一导出二进制&amp;代码-&gt;客户端拉取编译错误-&gt;修复编译错误&amp;逻辑问题</p>
+</blockquote>
+
+<p>现在是这样的：</p>
+
+<blockquote>
+  <p>需要改字段-&gt;改Excel-&gt;全后端各自写代码</p>
+</blockquote>
+
+<p>总的来讲，这个方案就是定义的代码就是元数据，前后端各自定义自己关心的结构体即可，不定义就不读取。对比常见的配置系统，不需要改Excel之后再改元数据，然后再改代码。并且不用单独学习元数据语法。</p>
+:ET

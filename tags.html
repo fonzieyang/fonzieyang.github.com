@@ -9,7 +9,7 @@ header-img: "img/sao_title.jpg"
 <ul class="entry-meta inline-list" style="list-style: none">
 {% assign tags_list = site.tags %}  
   {% if tags_list.first[0] == null %}
-    {% for tag in tags_list %} {% if tag ~= "tag" %}
+    {% for tag in tags_list %} {% if tag != "tag" %}
       <li style="float: left"><a href="#{{ tag }}" class="tag">{{ tag }} <span>{{ site.tags[tag].size }}篇</span></a></li>
     {% endif %}{% endfor %}
   {% else %}

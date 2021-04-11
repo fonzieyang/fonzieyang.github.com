@@ -1,0 +1,205 @@
+I"�J<p><a href="http://clintonbrennan.com/2014/04/lockstep-implementation-in-unity3d-part-2/">Lockstep Implementation in Unity3D – Part 2</a></p>
+
+<h3 id="概览">概览</h3>
+
+<p>在上次实现的帧同步模型当中，游戏帧率和通信频率(也就是帧同步长度)长度是固定间隔的。但实际上，每个玩家的延迟和性能都不同的。在update中会跟踪两个变量。第一个是玩家通信的时长。第二个则是游戏的性能时长。</p>
+
+<h3 id="移动平均数">移动平均数</h3>
+
+<p>为了处理延迟上的波动，我们想快速增加帧同步回合的时长，同时也想在低延迟的时候减少。如果游戏更新的节奏能够根据延迟的测量结果自动调节，而不是固定值的话，会使得游戏玩起来更加顺畅。我们可以累加所有的过去信息得到”移动平均数”，然后根据它作为调节的权重。</p>
+
+<p>每当一个新值大于平均数，我们会设置平均数为新值。这会得到快速增加延迟的行为。当值小于当前平均值，我们会通过权重处理该值，我们有以下公式：</p>
+
+\[newAverage = currentAverage * (1 – w) + newValue * ( w)\]
+
+<p>其中0&lt;w&lt;1</p>
+
+<p>在我的实现中，我设置w=0.1。而且还会跟踪每个玩家的平均数，而且总是使用所有玩家当中的最大值。这里是增加新值的方法：</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">public</span> <span class="kt">void</span> <span class="nf">Add</span><span class="p">(</span><span class="kt">int</span> <span class="n">newValue</span><span class="p">,</span> <span class="kt">int</span> <span class="n">playerID</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">newValue</span> <span class="o">&gt;</span> <span class="n">playerAverages</span><span class="p">[</span><span class="n">playerID</span><span class="p">])</span> <span class="p">{</span>
+        <span class="c1">//rise quickly</span>
+
+        <span class="n">playerAverages</span><span class="p">[</span><span class="n">playerID</span><span class="p">]</span> <span class="o">=</span> <span class="n">newValue</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">//slowly fall down</span>
+
+        <span class="n">playerAverages</span><span class="p">[</span><span class="n">playerID</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">playerAverages</span><span class="p">[</span><span class="n">playerID</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">9</span><span class="p">)</span> <span class="o">+</span> <span class="n">newValue</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>为了保证计算结果的确定性，计算只使用整数。因此公式调整如下：</p>
+
+\[newAverage = (currentAverage * (10 – w) + newValue * ( w)) / 10\]
+
+<p>其中0&lt;w&lt;1</p>
+
+<p>而在我的例子中，w=1。</p>
+
+<h3 id="运行时间平均数">运行时间平均数</h3>
+
+<p>每次游戏帧更新的时间是由运行时间平均数决定的。如果游戏帧要变得更长，那么我们需要降低每次帧同步回合更新游戏帧的次数。另一方面，如果游戏帧执行得更快了，每次帧同步回合可以更新游戏帧的次数也多了。对于每次帧同步回合，最长的游戏帧会被添加到平均数中。每次帧同步回合的第一个游戏帧都包含了处理动作的时间。这里使用Stopwatch来计算流逝的时间。</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">private</span> <span class="kt">void</span> <span class="nf">ProcessActions</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//process action should be considered in runtime performance</span>
+
+    <span class="n">gameTurnSW</span><span class="p">.</span><span class="n">Start</span> <span class="p">();</span>
+ 
+    <span class="p">...</span>
+ 
+    <span class="c1">//finished processing actions for this turn, stop the stopwatch</span>
+
+    <span class="n">gameTurnSW</span><span class="p">.</span><span class="n">Stop</span> <span class="p">();</span>
+<span class="p">}</span>
+ 
+<span class="k">private</span> <span class="kt">void</span> <span class="nf">GameFrameTurn</span><span class="p">()</span> <span class="p">{</span>
+   <span class="p">...</span>
+         
+    <span class="c1">//start the stop watch to determine game frame runtime performance</span>
+
+    <span class="n">gameTurnSW</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+ 
+    <span class="c1">//update game</span>
+
+    <span class="p">...</span>
+ 
+    <span class="n">GameFrame</span><span class="o">++</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">GameFrame</span> <span class="o">==</span> <span class="n">GameFramesPerLockstepTurn</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">GameFrame</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+ 
+    <span class="c1">//stop the stop watch, the gameframe turn is over</span>
+
+    <span class="n">gameTurnSW</span><span class="p">.</span><span class="n">Stop</span> <span class="p">();</span>
+    <span class="c1">//update only if it's larger - we will use the game frame that took the longest in this lockstep turn</span>
+
+    <span class="kt">long</span> <span class="n">runtime</span> <span class="o">=</span> <span class="n">Convert</span><span class="p">.</span><span class="n">ToInt32</span> <span class="p">((</span><span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span><span class="cm">/*deltaTime is in secounds, convert to milliseconds*/</span> <span class="o">+</span> <span class="n">gameTurnSW</span><span class="p">.</span><span class="n">ElapsedMilliseconds</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">runtime</span> <span class="o">&gt;</span> <span class="n">currentGameFrameRuntime</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">currentGameFrameRuntime</span> <span class="o">=</span> <span class="n">runtime</span><span class="p">;</span>
+    <span class="p">}</span>
+ 
+    <span class="c1">//clear for the next frame</span>
+
+    <span class="n">gameTurnSW</span><span class="p">.</span><span class="n">Reset</span><span class="p">();</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>注意到我们也用到了Time.deltaTime。使用这个可能会在游戏以固定帧率执行的情况下与上一帧时间重叠。但是，我们需要用到它，这使得Unity为我们所做的渲染以及其他事情都是可测量的。这个重叠是可接受的，因为只是需要更大的缓冲区而已。</p>
+
+<h3 id="网络平均数">网络平均数</h3>
+
+<p>拿什么作为网络平均数在这里不太明确。我最终使用了Stopwatch计算从玩家发送数据包到玩家确认动作的时间。这个帧同步模型发送的动作会在未来两个回合中执行。为了结束帧同步回合，我们需要所有玩家都确认了这个动作。在这之后，我们可能会有两个动作等待对方确认。为了解决这个问题，用到了两个Stopwatch。一个用于当前动作，另一个用于上一个动作。这被封装在ConfirmActions类当中。当帧同步回合往下走，上一个动作的Stopwatch会成为这一个动作的Stopwatch，而旧的”当前动作Stopwatch”会被复用作为新的”上一个动作Stopwatch”。</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">public</span> <span class="k">class</span> <span class="nc">ConfirmedActions</span>
+<span class="p">{</span>
+<span class="p">...</span>
+    <span class="k">public</span> <span class="kt">void</span> <span class="n">NextTurn</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">...</span>
+        <span class="n">Stopwatch</span> <span class="n">swapSW</span> <span class="o">=</span> <span class="n">priorSW</span><span class="p">;</span>
+             
+        <span class="c1">//last turns actions is now this turns prior actions</span>
+
+        <span class="p">...</span>
+        <span class="n">priorSW</span> <span class="o">=</span> <span class="n">currentSW</span><span class="p">;</span>
+         
+        <span class="c1">//set this turns confirmation actions to the empty array</span>
+
+        <span class="p">...</span>
+        <span class="n">currentSW</span> <span class="o">=</span> <span class="n">swapSW</span><span class="p">;</span>
+        <span class="n">currentSW</span><span class="p">.</span><span class="n">Reset</span> <span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>每当有确认进来，我们会确认我们接收了所有的确认，如果接收到了，那么就暂停Stopwatch。</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">public</span> <span class="kt">void</span> <span class="nf">ConfirmAction</span><span class="p">(</span><span class="kt">int</span> <span class="n">confirmingPlayerID</span><span class="p">,</span> <span class="kt">int</span> <span class="n">currentLockStepTurn</span><span class="p">,</span> <span class="kt">int</span> <span class="n">confirmedActionLockStepTurn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">confirmedActionLockStepTurn</span> <span class="o">==</span> <span class="n">currentLockStepTurn</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//if current turn, add to the current Turn Confirmation</span>
+
+        <span class="n">confirmedCurrent</span><span class="p">[</span><span class="n">confirmingPlayerID</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">confirmedCurrentCount</span><span class="o">++</span><span class="p">;</span>
+        <span class="c1">//if we recieved the last confirmation, stop timer</span>
+
+        <span class="c1">//this gives us the length of the longest roundtrip message</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">confirmedCurrentCount</span> <span class="o">==</span> <span class="n">lsm</span><span class="p">.</span><span class="n">numberOfPlayers</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">currentSW</span><span class="p">.</span><span class="n">Stop</span> <span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">confirmedActionLockStepTurn</span> <span class="o">==</span> <span class="n">currentLockStepTurn</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">//if confirmation for prior turn, add to the prior turn confirmation</span>
+
+        <span class="n">confirmedPrior</span><span class="p">[</span><span class="n">confirmingPlayerID</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">confirmedPriorCount</span><span class="o">++</span><span class="p">;</span>
+        <span class="c1">//if we recieved the last confirmation, stop timer</span>
+
+        <span class="c1">//this gives us the length of the longest roundtrip message</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">confirmedPriorCount</span> <span class="o">==</span> <span class="n">lsm</span><span class="p">.</span><span class="n">numberOfPlayers</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">priorSW</span><span class="p">.</span><span class="n">Stop</span> <span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="c1">//TODO: Error Handling</span>
+
+        <span class="n">log</span><span class="p">.</span><span class="n">Debug</span> <span class="p">(</span><span class="s">"WARNING!!!! Unexpected lockstepID Confirmed : "</span> <span class="o">+</span> <span class="n">confirmedActionLockStepTurn</span> <span class="o">+</span> <span class="s">" from player: "</span> <span class="o">+</span> <span class="n">confirmingPlayerID</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+<h3 id="发送平均数">发送平均数</h3>
+
+<p>为了让一个客户端向其他客户端发送平均数，Action接口修改为一个有两个字段的抽象类。</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="p">[</span><span class="n">Serializable</span><span class="p">]</span>
+<span class="k">public</span> <span class="n">abstract</span> <span class="k">class</span> <span class="nc">Action</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">NetworkAverage</span> <span class="p">{</span> <span class="n">get</span><span class="p">;</span> <span class="n">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">RuntimeAverage</span> <span class="p">{</span> <span class="n">get</span><span class="p">;</span> <span class="n">set</span><span class="p">;</span> <span class="p">}</span>
+ 
+    <span class="k">public</span> <span class="k">virtual</span> <span class="kt">void</span> <span class="n">ProcessAction</span><span class="p">()</span> <span class="p">{}</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>每当处理动作，这些数字会加到运行平均数。然后帧同步回合以及游戏帧回合开始更新</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">private</span> <span class="kt">void</span> <span class="nf">UpdateGameFrameRate</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">//log.Debug ("Runtime Average is " + runtimeAverage.GetMax ());</span>
+
+    <span class="c1">//log.Debug ("Network Average is " + networkAverage.GetMax ());</span>
+
+    <span class="n">LockstepTurnLength</span> <span class="o">=</span> <span class="p">(</span><span class="n">networkAverage</span><span class="p">.</span><span class="n">GetMax</span> <span class="p">()</span> <span class="o">*</span> <span class="mi">2</span><span class="cm">/*two round trips*/</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="cm">/*minimum of 1 ms*/</span><span class="p">;</span>
+    <span class="n">GameFrameTurnLength</span> <span class="o">=</span> <span class="n">runtimeAverage</span><span class="p">.</span><span class="n">GetMax</span> <span class="p">();</span>
+ 
+    <span class="c1">//lockstep turn has to be at least as long as one game frame</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">GameFrameTurnLength</span> <span class="o">&gt;</span> <span class="n">LockstepTurnLength</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">LockstepTurnLength</span> <span class="o">=</span> <span class="n">GameFrameTurnLength</span><span class="p">;</span>
+    <span class="p">}</span>
+ 
+    <span class="n">GameFramesPerLockstepTurn</span> <span class="o">=</span> <span class="n">LockstepTurnLength</span> <span class="o">/</span> <span class="n">GameFrameTurnLength</span><span class="p">;</span>
+    <span class="c1">//if gameframe turn length does not evenly divide the lockstep turn, there is extra time left after the last</span>
+
+    <span class="c1">//game frame. Add one to the game frame turn length so it will consume it and recalculate the Lockstep turn length</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">LockstepTurnLength</span> <span class="o">%</span> <span class="n">GameFrameTurnLength</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">GameFrameTurnLength</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">LockstepTurnLength</span> <span class="o">=</span> <span class="n">GameFramesPerLockstepTurn</span> <span class="o">*</span> <span class="n">GameFrameTurnLength</span><span class="p">;</span>
+    <span class="p">}</span>
+ 
+    <span class="n">LockstepsPerSecond</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1000</span> <span class="o">/</span> <span class="n">LockstepTurnLength</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">LockstepsPerSecond</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">LockstepsPerSecond</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span> <span class="c1">//minimum per second</span>
+ 
+    <span class="n">GameFramesPerSecond</span> <span class="o">=</span> <span class="n">LockstepsPerSecond</span> <span class="o">*</span> <span class="n">GameFramesPerLockstepTurn</span><span class="p">;</span>
+ 
+    <span class="n">PerformanceLog</span><span class="p">.</span><span class="n">LogGameFrameRate</span><span class="p">(</span><span class="n">LockStepTurnID</span><span class="p">,</span> <span class="n">networkAverage</span><span class="p">,</span> <span class="n">runtimeAverage</span><span class="p">,</span> <span class="n">GameFramesPerSecond</span><span class="p">,</span> <span class="n">LockstepsPerSecond</span><span class="p">,</span> <span class="n">GameFramesPerLockstepTurn</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<h3 id="更新支持单个玩家">更新：支持单个玩家</h3>
+
+<p>自从本文发出以来，增加了单人模式得支持。</p>
+
+<p>特别感谢<a href="redstinggames.com">redstinggames.com</a>的Dan提供。可以在以下看到修改：</p>
+
+<p><a href="https://bitbucket.org/brimock/dynamic-lockstep-sample/commits/11539478537f52cbafd8cfd575ea067fdd6a9e49">Single Player Update diff</a></p>
+
+<h3 id="源代码">源代码</h3>
+
+<p><a href="https://bitbucket.org/brimock/dynamic-lockstep-sample">Source code on bitbucket – Dynamic Lockstep Sample</a></p>
+
+:ET
